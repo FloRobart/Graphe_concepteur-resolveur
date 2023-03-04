@@ -6,6 +6,7 @@ import java.awt.Color;
 
 import ihm.FramePrincipale;
 import metier.Metier;
+import metier.Noeud;
 
 
 public class Controleur
@@ -19,6 +20,38 @@ public class Controleur
         this.metier = new Metier(this);
         this.ihm = new FramePrincipale(this);
     }
+
+
+    /*===================*/
+    /* Gestion du graphe */
+    /*===================*/
+    /*----------------*/
+    /* Panel création */
+    /*----------------*/
+    /**
+     * Permet d'ajouter un noeud au graphe
+     */
+    public void addNode() { this.metier.addNode(); }
+
+    /**
+     * Permet d'ajouter une arête entre deux noeuds du graphe
+     * @param nA : Noeud d'origine
+     * @param nB : Noeud de destination
+     */
+    public void addEdge(Noeud nA, Noeud nB) { this.metier.addEdge(nA, nB); }
+
+    /**
+     * Permet de trouver et d'afficher le plus court chemin entre deux noeuds
+     * @param nA : Noeud d'origine
+     * @param nB : Noeud de destination
+     */
+    public void findShortPath(Noeud nA, Noeud nB) { this.metier.findShortPath(nA, nB); }
+
+    /**
+     * Permet de trouver et d'afficher les circuit absorbant du graphe s'il y en a
+     */
+    public void findAbsorbingCircuit() { this.metier.findAbsorbingCircuit(); }
+
 
 
     /*========*/

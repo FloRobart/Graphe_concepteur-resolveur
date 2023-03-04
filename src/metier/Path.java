@@ -1,4 +1,4 @@
-package metier.path;
+package metier;
 
 import java.io.File;
 import java.io.FileNotFoundException;

@@ -1,8 +1,8 @@
 .\src\controleur\Controleur.java  
  
 .\src\metier\Metier.java  
- 
-.\src\metier\path\Path.java  
+.\src\metier\Path.java  
+.\src\metier\Noeud.java  
  
 .\src\ihm\FramePrincipale.java  
 .\src\ihm\PanelCreation.java  

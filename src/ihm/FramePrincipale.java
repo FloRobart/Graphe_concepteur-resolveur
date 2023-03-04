@@ -28,7 +28,10 @@ public class FramePrincipale extends JFrame
         this.panelRendu = new PanelRendu(this.ctrl);
 
         /* Ajout des composants */
-        this.add(new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, this.panelCreation, this.panelRendu));
+        JSplitPane jsp = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, this.panelCreation, this.panelRendu);
+        jsp.setOneTouchExpandable(true);
+		jsp.setContinuousLayout(true);
+        this.add(jsp);
         this.setJMenuBar(this.menuBarre);
 
 

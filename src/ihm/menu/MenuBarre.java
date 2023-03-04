@@ -36,6 +36,7 @@ public class MenuBarre extends JMenuBar implements ActionListener
 	private JMenuItem menuiPreferencesThemesClair;
 	private JMenuItem menuiPreferencesThemesSombre;
 	private JMenuItem menuiPreferencesThemesDark;
+	private JMenuItem menuiPreferencesThemesPink;
 
 
 	public MenuBarre(Controleur ctrl) 
@@ -74,6 +75,7 @@ public class MenuBarre extends JMenuBar implements ActionListener
 		this.menuiPreferencesThemesClair  = new JMenuItem("Clair" );
 		this.menuiPreferencesThemesSombre = new JMenuItem("Sombre");
 		this.menuiPreferencesThemesDark   = new JMenuItem("Dark"  );
+		this.menuiPreferencesThemesPink   = new JMenuItem("Pink"  );
 
 
 		/*------*/
@@ -100,6 +102,7 @@ public class MenuBarre extends JMenuBar implements ActionListener
 		this.menuiPreferencesThemes.add(this.menuiPreferencesThemesClair);
 		this.menuiPreferencesThemes.add(this.menuiPreferencesThemesSombre);
 		this.menuiPreferencesThemes.add(this.menuiPreferencesThemesDark);
+		this.menuiPreferencesThemes.add(this.menuiPreferencesThemesPink);
 
 		this.menuPreferences.add(this.menuiPreferencesThemes);
 
@@ -125,6 +128,7 @@ public class MenuBarre extends JMenuBar implements ActionListener
 		this.menuiPreferencesThemesClair .addActionListener(this);
 		this.menuiPreferencesThemesSombre.addActionListener(this);
 		this.menuiPreferencesThemesDark  .addActionListener(this);
+		this.menuiPreferencesThemesPink  .addActionListener(this);
 	}
 
 
@@ -141,6 +145,9 @@ public class MenuBarre extends JMenuBar implements ActionListener
 
 			if (e.getSource() == this.menuiPreferencesThemesDark)
 				this.ctrl.changerTheme("dark");
+
+			if (e.getSource() == this.menuiPreferencesThemesPink)
+				this.ctrl.changerTheme("pink");
 		}
 	}
 
@@ -199,6 +206,10 @@ public class MenuBarre extends JMenuBar implements ActionListener
 		/* Dark */
 		this.menuiPreferencesThemesDark  .setBackground(backGeneralColor);
 		this.menuiPreferencesThemesDark  .setForeground(foreGeneralColor);
+
+		/* Pink */
+		this.menuiPreferencesThemesPink  .setBackground(backGeneralColor);
+		this.menuiPreferencesThemesPink  .setForeground(foreGeneralColor);
 
 
 		/*------*/

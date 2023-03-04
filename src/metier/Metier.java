@@ -8,7 +8,6 @@ import java.io.PrintWriter;
 import java.util.HashMap;
 
 import controleur.Controleur;
-import metier.path.Path;
 
 
 public class Metier
@@ -26,6 +25,50 @@ public class Metier
         this.hmColorTheme = new HashMap<String, Color>();
         this.chargerThemes(this.getThemeUsed());
     }
+
+
+	/*===================*/
+    /* Gestion du graphe */
+    /*===================*/
+    /*----------------*/
+    /* Panel création */
+    /*----------------*/
+    /**
+     * Permet d'ajouter un noeud au graphe
+     */
+    public void addNode()
+	{
+		
+	}
+
+    /**
+     * Permet d'ajouter une arête entre deux noeuds du graphe
+     * @param nA : Noeud d'origine
+     * @param nB : Noeud de destination
+     */
+    public void addEdge(Noeud nA, Noeud nB)
+	{
+		
+	}
+
+    /**
+     * Permet de trouver et d'afficher le plus court chemin entre deux noeuds
+     * @param nA : Noeud d'origine
+     * @param nB : Noeud de destination
+     */
+    public void findShortPath(Noeud nA, Noeud nB)
+	{
+		
+	}
+
+    /**
+     * Permet de trouver et d'afficher les circuit absorbant du graphe s'il y en a
+     */
+    public void findAbsorbingCircuit()
+	{
+		
+	}
+
 
     /*========*/
     /* Thèmes */
