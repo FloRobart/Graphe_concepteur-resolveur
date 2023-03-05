@@ -116,6 +116,16 @@ public class Metier
 	}
 
 
+	/*-----------------*/
+    /* metier générale */
+    /*-----------------*/
+    /**
+     * Permet de récupérer le nombre de noeuds du graphe
+	 * @return liste de tous les noeuds du graphe
+     */
+    public List<Node> getNodes() { return this.listNode; }
+
+
 
     /*========*/
     /* Thèmes */

@@ -1,7 +1,7 @@
 package controleur;
 
 import java.util.HashMap;
-
+import java.util.List;
 import java.awt.Color;
 
 import ihm.FramePrincipale;
@@ -53,11 +53,21 @@ public class Controleur
      */
     public void findAbsorbingCircuit() { this.metier.findAbsorbingCircuit(); }
 
+
+    /*-----------------*/
+    /* metier générale */
+    /*-----------------*/
     /**
      * Permet d'obtenir la frame principale
      * @return Frame principale
      */
     public FramePrincipale getFramePrincipale() { return this.ihm; }
+
+    /**
+     * Permet de récupérer le nombre de noeuds du graphe
+	 * @return liste de tous les noeuds du graphe
+     */
+    public List<Node> getNodes() { return this.metier.getNodes(); }
 
 
 

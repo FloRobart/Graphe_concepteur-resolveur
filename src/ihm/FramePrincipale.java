@@ -40,6 +40,7 @@ public class FramePrincipale extends JFrame
         this.setVisible(true);
     }
 
+
     /**
      * Applique le thème à tous les composants de la fenêtre
      */
