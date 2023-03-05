@@ -6,7 +6,7 @@ import java.awt.Color;
 
 import ihm.FramePrincipale;
 import metier.Metier;
-import metier.Noeud;
+import metier.Node;
 
 
 public class Controleur
@@ -35,22 +35,29 @@ public class Controleur
 
     /**
      * Permet d'ajouter une arête entre deux noeuds du graphe
-     * @param nA : Noeud d'origine
-     * @param nB : Noeud de destination
+     * @param nodeOrig : Node d'origine
+     * @param nodeDest : Node de destination
+     * @param cout : Cout de l'arête
      */
-    public void addEdge(Noeud nA, Noeud nB) { this.metier.addEdge(nA, nB); }
+    public void addEdge(Node nodeOrig, Node nodeDest, int cout) { this.metier.addEdge(nodeOrig, nodeDest, cout); }
 
     /**
      * Permet de trouver et d'afficher le plus court chemin entre deux noeuds
-     * @param nA : Noeud d'origine
-     * @param nB : Noeud de destination
+     * @param nA : Node d'origine
+     * @param nB : Node de destination
      */
-    public void findShortPath(Noeud nA, Noeud nB) { this.metier.findShortPath(nA, nB); }
+    public void findShortPath(Node nA, Node nB) { this.metier.findShortPath(nA, nB); }
 
     /**
      * Permet de trouver et d'afficher les circuit absorbant du graphe s'il y en a
      */
     public void findAbsorbingCircuit() { this.metier.findAbsorbingCircuit(); }
+
+    /**
+     * Permet d'obtenir la frame principale
+     * @return Frame principale
+     */
+    public FramePrincipale getFramePrincipale() { return this.ihm; }
 
 
 

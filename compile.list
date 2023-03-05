@@ -2,7 +2,7 @@
  
 .\src\metier\Metier.java  
 .\src\metier\Path.java  
-.\src\metier\Noeud.java  
+.\src\metier\Node.java  
  
 .\src\ihm\FramePrincipale.java  
 .\src\ihm\PanelCreation.java  

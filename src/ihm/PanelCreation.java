@@ -1,12 +1,13 @@
 package ihm;
 
 import controleur.Controleur;
-import metier.Noeud;
+import metier.Node;
 
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.lang.StackWalker.Option;
 
 import javax.swing.JPanel;
 import javax.swing.JButton;
@@ -14,6 +15,7 @@ import javax.swing.JButton;
 import javax.swing.JButton;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JOptionPane;
 import javax.swing.JComboBox;
 import javax.swing.JScrollPane;
 import javax.swing.LayoutStyle;
@@ -28,8 +30,8 @@ public class PanelCreation extends JPanel implements ActionListener
     private Controleur ctrl;
                  
     private JButton          btnAddNode;
-    private JComboBox<Noeud> cbNoeudA;
-    private JComboBox<Noeud> cbNoeudB;
+    private JComboBox<Node> cbNodeA;
+    private JComboBox<Node> cbNodeB;
     private JButton          btnAddEdge;
     private JButton          btnFindShortPath;
     private JButton          btnFindAbsorbingCircuit;
@@ -42,13 +44,13 @@ public class PanelCreation extends JPanel implements ActionListener
 
         /* Création des composants */
         this.btnAddNode              = new JButton();
-        this.cbNoeudA             = new JComboBox<Noeud>();
-        this.cbNoeudB             = new JComboBox<Noeud>();
-        this.btnAddEdge             = new JButton();
+        this.cbNodeA                = new JComboBox<Node>();
+        this.cbNodeB                = new JComboBox<Node>();
+        this.btnAddEdge              = new JButton();
         this.btnFindShortPath        = new JButton();
         this.btnFindAbsorbingCircuit = new JButton();
 
-        setPreferredSize(new Dimension(300, 400));
+        this.setPreferredSize(new Dimension(300, 400));
 
         /* Bouton ajouter noeud */
         this.btnAddNode.setText("Add node");
@@ -57,26 +59,26 @@ public class PanelCreation extends JPanel implements ActionListener
         this.btnAddNode.setPreferredSize(new Dimension(100, 25));
 
         /* ComboBox noeud A */
-        this.cbNoeudA.setMaximumSize  (new Dimension(50, 75));
-        this.cbNoeudA.setMinimumSize  (new Dimension(50, 75));
-        this.cbNoeudA.setPreferredSize(new Dimension(50, 75));
+        this.cbNodeA.setMaximumSize  (new Dimension(50, 75));
+        this.cbNodeA.setMinimumSize  (new Dimension(50, 75));
+        this.cbNodeA.setPreferredSize(new Dimension(50, 75));
 
         /* ComboBox noeud B */
-        this.cbNoeudB.setMaximumSize  (new Dimension(50, 75));
-        this.cbNoeudB.setMinimumSize  (new Dimension(50, 75));
-        this.cbNoeudB.setPreferredSize(new Dimension(50, 75));
+        this.cbNodeB.setMaximumSize  (new Dimension(50, 75));
+        this.cbNodeB.setMinimumSize  (new Dimension(50, 75));
+        this.cbNodeB.setPreferredSize(new Dimension(50, 75));
 
         /* Bouton ajouter arête */
         this.btnAddEdge.setText("this.btnAddEdge");
-        this.btnAddEdge.setPreferredSize(new java.awt.Dimension(100, 25));
+        this.btnAddEdge.setPreferredSize(new Dimension(100, 25));
 
         /* Bouton trouver plus court chemin */
         this.btnFindShortPath.setText("this.btnFindShortPath");
-        this.btnFindShortPath.setPreferredSize(new java.awt.Dimension(100, 25));
+        this.btnFindShortPath.setPreferredSize(new Dimension(100, 25));
 
         /* Bouton trouver circuit absorbant */
         this.btnFindAbsorbingCircuit.setText("this.btnFindAbsorbingCircuit");
-        this.btnFindAbsorbingCircuit.setPreferredSize(new java.awt.Dimension(100, 25));
+        this.btnFindAbsorbingCircuit.setPreferredSize(new Dimension(100, 25));
 
 
         /* Positionnement des composants */
@@ -88,9 +90,9 @@ public class PanelCreation extends JPanel implements ActionListener
             layout.createParallelGroup(GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
             .addContainerGap(50, Short.MAX_VALUE)
-                .addComponent(this.cbNoeudA, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                .addComponent(this.cbNodeA, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 96, Short.MAX_VALUE)
-                .addComponent(this.cbNoeudB, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                .addComponent(this.cbNodeB, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(50, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -108,11 +110,11 @@ public class PanelCreation extends JPanel implements ActionListener
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap(25, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.TRAILING)
-                    .addComponent(this.cbNoeudB, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                    .addComponent(this.cbNodeB, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(this.btnAddNode, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 25, Short.MAX_VALUE)
-                        .addComponent(this.cbNoeudA, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(this.cbNodeA, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 25, Short.MAX_VALUE)
                 .addComponent(this.btnAddEdge, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 25, Short.MAX_VALUE)
@@ -140,13 +142,21 @@ public class PanelCreation extends JPanel implements ActionListener
         }
         else if(ae.getSource() == this.btnAddEdge)
         {
-            // TODO : faire les vérifications de séléction des noeuds dans les combobox
-            this.ctrl.addEdge((Noeud)(this.cbNoeudA.getSelectedItem()), (Noeud)(this.cbNoeudB.getSelectedItem()));
+            if (this.cbNodeA.getSelectedItem() != null && this.cbNodeB.getSelectedItem() != null)
+            {
+                String cout = "";
+                do
+                {
+                    cout = JOptionPane.showInputDialog(this.ctrl.getFramePrincipale(), "cout de l'arête : ", "Ajout d'une arête", JOptionPane.QUESTION_MESSAGE);
+                }while(!cout.matches("[0-9]+"));
+
+                this.ctrl.addEdge((Node)(this.cbNodeA.getSelectedItem()), (Node)(this.cbNodeB.getSelectedItem()), Integer.parseInt(cout));
+            }
         }
         else if(ae.getSource() == this.btnFindShortPath)
         {
-            // TODO : faire les vérifications de séléction des noeuds dans les combobox
-            this.ctrl.findShortPath((Noeud)(this.cbNoeudA.getSelectedItem()), (Noeud)(this.cbNoeudB.getSelectedItem()));
+            if (this.cbNodeA.getSelectedItem() != null && this.cbNodeB.getSelectedItem() != null)
+                this.ctrl.findShortPath((Node)(this.cbNodeA.getSelectedItem()), (Node)(this.cbNodeB.getSelectedItem()));
         }
         else if(ae.getSource() == this.btnFindAbsorbingCircuit)
         {
@@ -171,11 +181,11 @@ public class PanelCreation extends JPanel implements ActionListener
         this.btnAddNode.setBackground(buttonsBackground);
         this.btnAddNode.setForeground(foreGeneralColor);
 
-        this.cbNoeudA.setBackground(buttonsBackground);
-        this.cbNoeudA.setForeground(foreGeneralColor);
+        this.cbNodeA.setBackground(buttonsBackground);
+        this.cbNodeA.setForeground(foreGeneralColor);
 
-        this.cbNoeudB.setBackground(buttonsBackground);
-        this.cbNoeudB.setForeground(foreGeneralColor);
+        this.cbNodeB.setBackground(buttonsBackground);
+        this.cbNodeB.setForeground(foreGeneralColor);
 
         this.btnAddEdge.setBackground(buttonsBackground);
         this.btnAddEdge.setForeground(foreGeneralColor);

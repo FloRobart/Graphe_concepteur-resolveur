@@ -5,9 +5,12 @@ import org.jdom2.input.SAXBuilder;
 
 import java.awt.Color;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import controleur.Controleur;
+import ihm.FramePrincipale;
 
 
 public class Metier
@@ -16,10 +19,15 @@ public class Metier
 
     private HashMap<String, Color> hmColorTheme;
 
+	private List<Node> listNode;
+
 
     public Metier(Controleur ctrl)
     {
         this.ctrl = ctrl;
+
+		/* Gestion du graphe */
+		this.listNode = new ArrayList<Node>();
 
         /* Thèmes */
         this.hmColorTheme = new HashMap<String, Color>();
@@ -38,25 +46,63 @@ public class Metier
      */
     public void addNode()
 	{
-		
+		this.listNode.add(new Node(defineName("A")));
+	}
+
+	/**
+	 * Défini le nom du noeud en fonction des autres noeuds du graphe
+	 * @param defaultName : Nom par défaut ("A")
+	 * @return Nom du noeud
+	 */
+	private String defineName(String defaultName)
+	{
+		String name = defaultName;
+		for(Node n : this.listNode)
+		{
+			if(n.getName().equals(name))
+			{
+				for (int i = name.length()-1; i >= 0; i--)
+				{
+					if (name.charAt(i) == 'E')
+					{
+						if (i == 0)
+							name = name + "A";
+						
+						name = name.substring(0, i) + "A" + name.substring(i+1, name.length());
+					}
+					else
+					{
+						name = name.substring(0, i) + (char)((int)(name.charAt(i)) + 1) + name.substring(i+1, name.length());
+						break;
+					}
+				}
+			}
+		}
+
+		return name;
 	}
 
     /**
      * Permet d'ajouter une arête entre deux noeuds du graphe
-     * @param nA : Noeud d'origine
-     * @param nB : Noeud de destination
+     * @param nodeOrig : Node d'origine
+     * @param nodeDest : Node de destination
+	 * @param cout : Cout de l'arête
      */
-    public void addEdge(Noeud nA, Noeud nB)
+    public void addEdge(Node nodeOrig, Node nodeDest, int cout)
 	{
-		
+		if (nodeOrig == null) throw new NullPointerException("Node d'origine null");
+		if (nodeDest == null) throw new NullPointerException("Node de destination null");
+		if (cout < 0) throw new IllegalArgumentException("Cout négatif");
+
+		nodeOrig.addVoisin(nodeDest, cout);
 	}
 
     /**
      * Permet de trouver et d'afficher le plus court chemin entre deux noeuds
-     * @param nA : Noeud d'origine
-     * @param nB : Noeud de destination
+     * @param nA : Node d'origine
+     * @param nB : Node de destination
      */
-    public void findShortPath(Noeud nA, Noeud nB)
+    public void findShortPath(Node nA, Node nB)
 	{
 		
 	}
@@ -68,6 +114,7 @@ public class Metier
 	{
 		
 	}
+
 
 
     /*========*/
