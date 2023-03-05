@@ -61,6 +61,18 @@ public class Controleur
      */
     public void addNodeInJList(Node node) { this.ihm.addNodeInJList(node); }
 
+    /**
+     * Permet de supprimer un noeud de la JList de l'ihm
+     * @param node : Node à supprimer
+     */
+    public void deleteNodeInJList(Node node) { this.ihm.deleteNodeInJList(node); }
+
+    /**
+     * Permet de supprimer un noeud
+     * @param node : Node à supprimer
+     */
+    public void deleteNode(Node node) { this.metier.deleteNode(node); }
+
 
     /*-------------*/
     /* Panel rendu */

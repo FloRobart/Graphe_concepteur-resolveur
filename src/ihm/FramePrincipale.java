@@ -53,6 +53,12 @@ public class FramePrincipale extends JFrame
     public void majIhm() { this.panelRendu.majIhm(); }
 
     /**
+     * Permet de supprimer un noeud de la JList de l'ihm
+     * @param node : Node à supprimer
+     */
+    public void deleteNodeInJList(Node node) { this.panelCreation.deleteNodeInJList(node); }
+
+    /**
      * Applique le thème à tous les composants de la fenêtre
      */
     public void appliquerTheme()

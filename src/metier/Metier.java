@@ -19,7 +19,7 @@ public class Metier
 
     private HashMap<String, Color> hmColorTheme;
 
-	private List<Node> listNode;
+	private List<Node> lstNode;
 
 
     public Metier(Controleur ctrl)
@@ -27,7 +27,7 @@ public class Metier
         this.ctrl = ctrl;
 
 		/* Gestion du graphe */
-		this.listNode = new ArrayList<Node>();
+		this.lstNode = new ArrayList<Node>();
 
         /* Thèmes */
         this.hmColorTheme = new HashMap<String, Color>();
@@ -46,8 +46,8 @@ public class Metier
      */
     public void addNode()
 	{
-		this.listNode.add(new Node(defineName("A")));
-		this.ctrl.addNodeInJList(this.listNode.get(this.listNode.size()-1));
+		this.lstNode.add(new Node(defineName("A")));
+		this.ctrl.addNodeInJList(this.lstNode.get(this.lstNode.size()-1));
 	}
 
 	/**
@@ -58,7 +58,7 @@ public class Metier
 	private String defineName(String defaultName)
 	{
 		String name = defaultName;
-		for(Node n : this.listNode)
+		for(Node n : this.lstNode)
 		{
 			if(n.getName().equals(name))
 			{
@@ -73,10 +73,11 @@ public class Metier
 					}
 					else
 					{
-						name = name.substring(0, i) + (char)((int)(name.charAt(i)) + 1) + name.substring(i+1, name.length());
-						break;
+						return this.defineName(name.substring(0, i) + (char)((int)(name.charAt(i)) + 1) + name.substring(i+1, name.length()));
 					}
 				}
+
+				return this.defineName(name);
 			}
 		}
 
@@ -116,6 +117,15 @@ public class Metier
 		
 	}
 
+	/**
+     * Permet de supprimer un noeud de la JList de l'ihm
+     * @param node : Node à supprimer
+     */
+    public void deleteNode(Node node)
+	{
+		this.lstNode.remove(node);
+	}
+
 
 	/*-----------------*/
     /* metier générale */
@@ -124,7 +134,7 @@ public class Metier
      * Permet de récupérer le nombre de noeuds du graphe
 	 * @return liste de tous les noeuds du graphe
      */
-    public List<Node> getNodes() { return this.listNode; }
+    public List<Node> getNodes() { return this.lstNode; }
 
 
 

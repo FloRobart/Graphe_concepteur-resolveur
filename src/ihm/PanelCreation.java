@@ -44,8 +44,8 @@ public class PanelCreation extends JPanel implements ActionListener
 
         /* Création des composants */
         this.btnAddNode              = new JButton();
-        this.cbNodeA                = new JComboBox<Node>();
-        this.cbNodeB                = new JComboBox<Node>();
+        this.cbNodeA                 = new JComboBox<Node>();
+        this.cbNodeB                 = new JComboBox<Node>();
         this.btnAddEdge              = new JButton();
         this.btnFindShortPath        = new JButton();
         this.btnFindAbsorbingCircuit = new JButton();
@@ -140,6 +140,16 @@ public class PanelCreation extends JPanel implements ActionListener
         // Ajout du noeud dans la JList
         this.cbNodeA.addItem(node);
         this.cbNodeB.addItem(node);
+    }
+
+    /**
+     * Permet de supprimer un noeud de la JList de l'ihm
+     * @param node : Node à supprimer
+     */
+    public void deleteNodeInJList(Node node)
+    {
+        this.cbNodeA.removeItem(node);
+        this.cbNodeB.removeItem(node);
     }
 
 

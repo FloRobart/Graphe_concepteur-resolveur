@@ -29,6 +29,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 
 import controleur.Controleur;
+import ihm.menu.PopUpMenu;
 import metier.Node;
 
 
@@ -37,13 +38,17 @@ public class PanelPaint extends JPanel implements MouseListener, MouseMotionList
     private Controleur ctrl;
 
     private Node nodeSelected;
+    private PopUpMenu popUpMenu;
+
     private int[] taillePlateau;
+
 
     public PanelPaint(Controleur ctrl, int[] taillePlateau)
     {
         this.ctrl = ctrl;
 
         this.nodeSelected = null;
+        this.popUpMenu = new PopUpMenu(this.ctrl);
 
         this.taillePlateau = taillePlateau;
 		this.setBorder(BorderFactory.createLineBorder(this.ctrl.getTheme().get("titlesBackground"), 2));
@@ -150,6 +155,8 @@ public class PanelPaint extends JPanel implements MouseListener, MouseMotionList
     public void appliquerTheme()
     {
         this.setBackground(this.ctrl.getTheme().get("titlesBackground"));
+        if (this.popUpMenu != null)
+            this.popUpMenu.appliquerTheme();
     }
 
     @Override
@@ -161,6 +168,10 @@ public class PanelPaint extends JPanel implements MouseListener, MouseMotionList
                 me.translatePoint(0, me.getY());
             else if (me.getY() < 0)
                 me.translatePoint(me.getX(), 0);
+            else if (me.getX() > this.getWidth())
+                me.translatePoint(this.getWidth(), me.getY());
+            else if (me.getY() > this.getHeight())
+                me.translatePoint(me.getX(), this.getHeight());
             else
             {
                 this.nodeSelected.setPosition(me.getX() - (nodeSelected.getWidth() / 2), me.getY() - (nodeSelected.getHeight() / 2));
@@ -190,9 +201,24 @@ public class PanelPaint extends JPanel implements MouseListener, MouseMotionList
     }
 
     @Override
-    public void mouseMoved(MouseEvent me) {}
+    public void mouseClicked(MouseEvent me)
+    {
+        if (me.getButton() == MouseEvent.BUTTON3)
+        {
+            for (Node node : this.ctrl.getNodes())
+            {
+                if (me.getX() > node.getX() - node.getWidth () && me.getX() < node.getX() + node.getWidth() &&
+                    me.getY() > node.getY() - node.getHeight() && me.getY() < node.getY() + node.getHeight() )
+                {
+                    this.popUpMenu.show(this, me.getX(), me.getY(), node);
+                    break;
+                }
+            }
+        }
+    }
+
     @Override
-    public void mouseClicked(MouseEvent me) {}
+    public void mouseMoved(MouseEvent me) {}
     @Override
     public void mouseEntered(MouseEvent me) {}
     @Override
