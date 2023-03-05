@@ -6,23 +6,36 @@ import java.util.List;
 
 public class Node
 {
+    private static final int DEFAULT_WIDTH  = 20;
+    private static final int DEFAULT_HEIGHT = 20;
+
     private String name;
-    private List<Node> listVoisin;
+    private List<Node> lstNeighbors;
     private List<Integer> listCout;
 
     private int x;
     private int y;
 
+    private int width;
+    private int height;
+
     public Node(String name)
     {
         this.name = name;
-        this.listVoisin = new ArrayList<Node>();
+        this.lstNeighbors = new ArrayList<Node>();
+        this.listCout = new ArrayList<Integer>();
+
+        this.x = 100;
+        this.y = 100;
+
+        this.width  = Node.DEFAULT_WIDTH;
+        this.height = Node.DEFAULT_HEIGHT;
     }
 
-    public Node(String name, List<Node> listVoisin, List<Integer> listCout, int x, int y)
+    public Node(String name, List<Node> lstNeighbors, List<Integer> listCout, int x, int y)
     {
         this.name = name;
-        this.listVoisin = listVoisin == null ? new ArrayList<Node>   () : listVoisin;
+        this.lstNeighbors = lstNeighbors == null ? new ArrayList<Node>   () : lstNeighbors;
         this.listCout   = listCout   == null ? new ArrayList<Integer>() : listCout;
         this.x = x;
         this.y = y;
@@ -30,13 +43,13 @@ public class Node
 
     /**
      * Permet d'ajouter un voisin au node
-     * @param nodeVoisin : Node voisin
+     * @param neighborNode : Node voisin
      */
-    public void addVoisin(Node nodeVoisin, int cout)
+    public void addNeighbor(Node neighborNode, int cout)
     {
-        if (nodeVoisin == null) throw new IllegalArgumentException("Le node ne peut pas être null");
+        if (neighborNode == null) throw new IllegalArgumentException("Le node ne peut pas être null");
 
-        this.listVoisin.add(nodeVoisin);
+        this.lstNeighbors.add(neighborNode);
         this.listCout.add(cout);
     }
 
@@ -44,16 +57,16 @@ public class Node
      * Permet de supprimer un voisin du node
      * @param nodeToRemove : Node à supprimer
      */
-    public void removeVoisin(Node nodeToRemove)
+    public void removeNeighbor(Node nodeToRemove)
     {
         if (nodeToRemove == null) throw new IllegalArgumentException("Le node ne peut pas être null");
         if (!nodeToRemove.isVoisin(this)) throw new IllegalArgumentException("Le node n'est pas un voisin du node courant");
 
-        for (int i = 0; i < this.listVoisin.size(); i++)
+        for (int i = 0; i < this.lstNeighbors.size(); i++)
         {
-            if (this.listVoisin.get(i) == nodeToRemove)
+            if (this.lstNeighbors.get(i) == nodeToRemove)
             {
-                this.listVoisin.remove(i);
+                this.lstNeighbors.remove(i);
                 this.listCout.remove(i);
                 break;
             }
@@ -64,7 +77,7 @@ public class Node
      * Permet de récupérer la liste des voisins du node
      * @return Liste des voisins
      */
-    public List<Node> getListVoisin() { return this.listVoisin; }
+    public List<Node> getNeighbors() { return this.lstNeighbors; }
 
     /**
      * Permet de savoir si le node est un voisin du node courant
@@ -76,7 +89,7 @@ public class Node
         if (node == null) throw new IllegalArgumentException("Le node ne peut pas être null");
         if (node == this) throw new IllegalArgumentException("Le node ne peut pas être le node courant");
 
-        for (Node n : this.listVoisin)
+        for (Node n : this.lstNeighbors)
             if (n == node)
                 return true;
 
@@ -100,8 +113,8 @@ public class Node
         if (nodeDestination == this) throw new IllegalArgumentException("Le node de destination ne peut pas être le node courant");
         if (!nodeDestination.isVoisin(this)) throw new IllegalArgumentException("Le node n'est pas un voisin du node courant");
 
-        for(int i = 0; i < this.listVoisin.size(); i++)
-            if(this.listVoisin.get(i) == nodeDestination)
+        for(int i = 0; i < this.lstNeighbors.size(); i++)
+            if(this.lstNeighbors.get(i) == nodeDestination)
                 return this.listCout.get(i);
             
         throw new IllegalArgumentException("Le node n'est pas un voisin du node courant");
@@ -118,6 +131,37 @@ public class Node
      * @return Position y du node
      */
     public int getY() { return this.y; }
+
+    /**
+     * Permet de récupérer la largeur du node
+     * @return Largeur du node
+     */
+    public int getWidth() { return this.width; }
+
+    /**
+     * Permet de récupérer la hauteur du node
+     * @return Hauteur du node
+     */
+    public int getHeight() { return this.height; }
+
+    /**
+     * Permet de modifier la position x du node
+     * @param x : int nouvelle position x
+     */
+    public void setX(int x) { this.x = x; }
+
+    /**
+     * Permet de modifier la position y du node
+     * @param y : int nouvelle position y
+     */
+    public void setY(int y) { this.y = y; }
+
+    /**
+     * Permet de modifier la position du noeud
+     * @param x : nouvelle position x
+     * @param y : nouvelle position y
+     */
+    public void setPosition(int x, int y) { this.x = x; this.y = y; }
 
     /**
      * Permet de mettre le noeud sous forme textuel (sérialiser) pour l'enregistrer dans un fichier texte
@@ -149,11 +193,7 @@ public class Node
     @Override
     public String toString()
     {
-        String str = this.name + " : [";
-        for (Node n : this.listVoisin)
-            str += n.getName() + ", ";
-
-        return str.substring(0, str.length() - 2) + "]";
+        return this.name;
     }
 
 

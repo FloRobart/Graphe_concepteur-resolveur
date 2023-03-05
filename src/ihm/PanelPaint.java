@@ -16,6 +16,14 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
@@ -24,21 +32,28 @@ import controleur.Controleur;
 import metier.Node;
 
 
-public class PanelPaint extends JPanel
+public class PanelPaint extends JPanel implements MouseListener, MouseMotionListener
 {
     private Controleur ctrl;
 
-    private int[] taillePlateau;	
-	private double zoomFactor = 1;
+    private Node nodeSelected;
+    private int[] taillePlateau;
 
     public PanelPaint(Controleur ctrl, int[] taillePlateau)
     {
         this.ctrl = ctrl;
 
+        this.nodeSelected = null;
+
         this.taillePlateau = taillePlateau;
 		this.setBorder(BorderFactory.createLineBorder(this.ctrl.getTheme().get("titlesBackground"), 2));
 
 		this.setSize(taillePlateau[0], taillePlateau[1]);
+        this.setPreferredSize(new Dimension(taillePlateau[0], taillePlateau[1]));
+        this.setBackground(this.ctrl.getTheme().get("titlesBackground"));
+
+        this.addMouseListener(this);
+        this.addMouseMotionListener(this);
     }
 
     @Override
@@ -48,52 +63,138 @@ public class PanelPaint extends JPanel
 
         Graphics2D g2 = (Graphics2D) g;
 
-		AffineTransform at = new AffineTransform();
-		at.scale(zoomFactor, zoomFactor);
-        g2.transform(at);
-
 		// affichage de la couleur de fond
 		g2.setColor(this.ctrl.getTheme().get("titlesBackground"));
 		g2.fillRect(0, 0, taillePlateau[0], taillePlateau[1]);
 
-        // affichage des noeuds
-        List<Node> lstNodes = this.ctrl.getNodes();
-        for (int i = 0; i < lstNodes.size(); i++)
+
+        // affichage des liens
+        for (Node node : this.ctrl.getNodes())
         {
-            g2.setColor(this.ctrl.getTheme().get("foreground"));
-            g2.fillOval(lstNodes.get(i).getX(), lstNodes.get(i).getY(), 10, 10);
+            for (Node voisin : node.getNeighbors())
+            {
+                int xVoisin = voisin.getX() + voisin.getWidth() / 2;
+                int yVoisin = voisin.getY() + voisin.getHeight() / 2;
 
-            // affichage du nom du noeud
-            g2.setFont(new Font("Arial", Font.BOLD, 10));
-            FontMetrics fm = g2.getFontMetrics();
-            Rectangle2D rect = fm.getStringBounds(lstNodes.get(i).getName(), g2);
-            g2.drawString(lstNodes.get(i).getName(), lstNodes.get(i).getX() - (int) rect.getWidth()/2 + 5, lstNodes.get(i).getY() - (int) rect.getHeight()/2 + 5);
+                xVoisin = node.getX() > voisin.getX() ? xVoisin + voisin.getWidth() / 2 : xVoisin - voisin.getWidth() / 2;
+                yVoisin = node.getY() > voisin.getY() ? yVoisin + voisin.getWidth() / 2 : yVoisin - voisin.getWidth() / 2;
+
+                this.drawArrow(g2, node.getX() + node.getWidth() / 2, node.getY() + node.getHeight() / 2, xVoisin, yVoisin);
+            }
         }
-	}
 
-	/**
-     * Met à jour le zoom de la fenêtre
-     * @param zoomFactor le facteur de zoom
-     */
-	public void majZoom(double zoomFactor)
-	{
-		this.zoomFactor = zoomFactor;
-		this.setSize( (int) (this.taillePlateau[0] * zoomFactor), 
-		              (int) (this.taillePlateau[1] * zoomFactor) );
-
-		this.repaint();
+        // affichage des noeuds
+        for (Node node : this.ctrl.getNodes())
+            this.drawNode(g2, node.getX(), node.getY(), node.getHeight(), node.getHeight(), node.getName());
+        
 	}
 
     /**
-     * Met à jour l'affichage de la fenêtre
+     * Dessine une flèche entre deux points
+     * @param g2 : Graphics2D sur lequel dessiner
+     * @param x1 : coordonnée x du point de départ
+     * @param y1 : coordonnée y du point de départ
+     * @param x2 : coordonnée x du point d'arrivée
+     * @param y2 : coordonnée y du point d'arrivée
      */
-	public void majIhm()
-	{
-		this.repaint();
-	}
+    private void drawArrow(Graphics2D g2, int x1, int y1, int x2, int y2)
+    {
+        g2.setColor(this.ctrl.getTheme().get("background"));
+        if (x1 == x2 && y1 == y2)
+        {
+            // Draw a circle
+            g2.setStroke(new BasicStroke(2));
+            g2.drawOval(x1 - 10, y1 - 10, 20, 20);
+        }
+        else 
+        {
+            // Draw the line
+            g2.setStroke(new BasicStroke(2));
+            g2.drawLine(x1, y1, x2, y2);
+            
+            // Draw the arrow head
+            double angle = Math.atan2(y2 - y1, x2 - x1);
+            int arrowLength = 20;
+            int x3 = x2 - (int) (arrowLength * Math.cos(angle - Math.PI/6));
+            int y3 = y2 - (int) (arrowLength * Math.sin(angle - Math.PI/6));
+            int x4 = x2 - (int) (arrowLength * Math.cos(angle + Math.PI/6));
+            int y4 = y2 - (int) (arrowLength * Math.sin(angle + Math.PI/6));
+            g2.drawLine(x2, y2, x3, y3);
+            g2.drawLine(x2, y2, x4, y4);
+        }
+    }
 
+
+    /**
+     * Dessine un noeud
+     * @param g2   : Graphics2D sur lequel dessiner
+     * @param x    : coordonnée x du noeud
+     * @param y    : coordonnée y du noeud
+     * @param name : nom du noeud
+     */
+    private void drawNode(Graphics2D g2, int x, int y, int width, int height, String name)
+    {
+        g2.setColor(this.ctrl.getTheme().get("foreground"));
+        g2.fillOval(x, y, width, height);
+
+        // affichage du nom du noeud
+        g2.setFont(new Font("Arial", Font.BOLD, width));
+        FontMetrics fm = g2.getFontMetrics();
+        Rectangle2D rect = fm.getStringBounds(name, g2);
+        g2.drawString(name, x - (int) rect.getWidth()/2 + width/2, y - (int) rect.getHeight()/2 + 5);
+    }
+
+    /**
+     * Applique le thème à tous les composants du panel
+     */
     public void appliquerTheme()
     {
         this.setBackground(this.ctrl.getTheme().get("titlesBackground"));
     }
+
+    @Override
+    public void mouseDragged(MouseEvent me)
+    {
+        if (this.nodeSelected != null)
+        {
+            if (me.getX() < 0)
+                me.translatePoint(0, me.getY());
+            else if (me.getY() < 0)
+                me.translatePoint(me.getX(), 0);
+            else
+            {
+                this.nodeSelected.setPosition(me.getX() - (nodeSelected.getWidth() / 2), me.getY() - (nodeSelected.getHeight() / 2));
+                this.repaint();
+            }
+        }
+    }
+
+    @Override
+    public void mousePressed(MouseEvent me)
+    {
+        for (Node node : this.ctrl.getNodes())
+        {
+            if (me.getX() > node.getX() - node.getWidth () && me.getX() < node.getX() + node.getWidth() &&
+                me.getY() > node.getY() - node.getHeight() && me.getY() < node.getY() + node.getHeight() )
+            {
+                this.nodeSelected = node;
+                break;
+            }
+        }
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent me)
+    {
+        this.nodeSelected = null;
+    }
+
+    @Override
+    public void mouseMoved(MouseEvent me) {}
+    @Override
+    public void mouseClicked(MouseEvent me) {}
+    @Override
+    public void mouseEntered(MouseEvent me) {}
+    @Override
+    public void mouseExited(MouseEvent me) {}
 }

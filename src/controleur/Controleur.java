@@ -29,7 +29,9 @@ public class Controleur
     /* Panel création */
     /*----------------*/
     /**
-     * Permet d'ajouter un noeud au graphe
+     * Permet d'ajouter un noeud au graphe.
+     * Le nom du noeud est défini automatiquement.
+     * Le noeud est ajouté à la liste des noeuds du panel de création.
      */
     public void addNode() { this.metier.addNode(); }
 
@@ -52,6 +54,21 @@ public class Controleur
      * Permet de trouver et d'afficher les circuit absorbant du graphe s'il y en a
      */
     public void findAbsorbingCircuit() { this.metier.findAbsorbingCircuit(); }
+
+    /**
+     * Permet d'ajouter un noeud dans la JList de l'ihm
+     * @param node : Node à ajouter
+     */
+    public void addNodeInJList(Node node) { this.ihm.addNodeInJList(node); }
+
+
+    /*-------------*/
+    /* Panel rendu */
+    /*-------------*/
+    /**
+     * Permet de mettre à jour l'ihm
+     */
+    public void majIhm() { this.ihm.majIhm(); }
 
 
     /*-----------------*/

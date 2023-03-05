@@ -2,6 +2,7 @@ package ihm;
 
 import controleur.Controleur;
 import ihm.menu.MenuBarre;
+import metier.Node;
 
 import javax.swing.JFrame;
 import javax.swing.JSplitPane;
@@ -19,7 +20,7 @@ public class FramePrincipale extends JFrame
     {
         this.ctrl = ctrl;
         this.setTitle("Frame principale");
-        this.setSize(400, 300);
+        this.setSize(600, 400);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         /* Création des composants */
@@ -40,6 +41,16 @@ public class FramePrincipale extends JFrame
         this.setVisible(true);
     }
 
+    /**
+     * Permet d'ajouter un noeud dans la JList de l'ihm
+     * @param node : Node à ajouter
+     */
+    public void addNodeInJList(Node node) { this.panelCreation.addNodeInJList(node); }
+
+    /**
+     * Permet de mettre à jour l'ihm
+     */
+    public void majIhm() { this.panelRendu.majIhm(); }
 
     /**
      * Applique le thème à tous les composants de la fenêtre

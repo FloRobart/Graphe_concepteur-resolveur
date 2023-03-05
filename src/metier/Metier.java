@@ -47,6 +47,7 @@ public class Metier
     public void addNode()
 	{
 		this.listNode.add(new Node(defineName("A")));
+		this.ctrl.addNodeInJList(this.listNode.get(this.listNode.size()-1));
 	}
 
 	/**
@@ -94,7 +95,7 @@ public class Metier
 		if (nodeDest == null) throw new NullPointerException("Node de destination null");
 		if (cout < 0) throw new IllegalArgumentException("Cout négatif");
 
-		nodeOrig.addVoisin(nodeDest, cout);
+		nodeOrig.addNeighbor(nodeDest, cout);
 	}
 
     /**

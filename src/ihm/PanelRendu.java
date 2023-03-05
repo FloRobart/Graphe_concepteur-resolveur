@@ -1,6 +1,7 @@
 package ihm;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.MouseInfo;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
@@ -18,38 +19,30 @@ import javax.swing.SwingUtilities;
 import controleur.Controleur;
 
 
-public class PanelRendu extends JPanel implements ActionListener, MouseWheelListener, MouseListener, MouseMotionListener
+public class PanelRendu extends JPanel
 {
     private Controleur ctrl;
+    private PanelPaint panelPaint;
 
     public PanelRendu(Controleur ctrl)
     {
         this.ctrl = ctrl;
 
-        this.addMouseListener(this);
-        this.addMouseMotionListener(this);
-        this.addMouseWheelListener(this);
+        this.setSize(500, 500);
+        this.setPreferredSize(new Dimension(500, 500));
+
+        /* Création des composants */
+        this.panelPaint = new PanelPaint(this.ctrl, new int[]{500, 500});
+
+
+        /* Ajout des composants */
+        this.add(this.panelPaint);
     }
 
-
-    @Override
-	public void mouseMoved  (MouseEvent me)        {}
-    @Override
-    public void mouseEntered(MouseEvent me)        {}
-    @Override
-    public void mouseExited (MouseEvent me)        {}
-    @Override
-    public void mouseDragged(MouseEvent me)        {}
-    @Override
-    public void mouseClicked(MouseEvent me)        {}
-    @Override
-    public void mousePressed(MouseEvent me)        {}
-    @Override
-    public void mouseReleased(MouseEvent me)       {}
-    @Override
-    public void mouseWheelMoved(MouseWheelEvent me){}
-    @Override
-    public void actionPerformed(ActionEvent me)    {}
+    /**
+     * Permet de mettre à jour l'ihm
+     */
+    public void majIhm() { this.panelPaint.repaint(); }
 
 
     /**
