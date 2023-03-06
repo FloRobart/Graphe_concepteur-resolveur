@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.Color;
 
+import javax.swing.JFileChooser;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -121,6 +122,10 @@ public class MenuBarre extends JMenuBar implements ActionListener
 		/*-------------*/
 		/* Préférences */
 		/*-------------*/
+		/* Fichier */
+		this.menuiFichiersCharger    .addActionListener(this);
+		this.menuiFichiersSauvegarder.addActionListener(this);
+
 		/* Thèmes */
 		this.menuiPreferencesThemesClair .addActionListener(this);
 		this.menuiPreferencesThemesSombre.addActionListener(this);
@@ -133,6 +138,18 @@ public class MenuBarre extends JMenuBar implements ActionListener
 	{
 		if (e.getSource() instanceof JMenuItem)
 		{
+			/* Fichier */
+			if (e.getSource() == this.menuiFichiersCharger)
+			{
+				String path = "";
+				this.ctrl.chargerGraphe(path);
+			}
+
+			if (e.getSource() == this.menuiFichiersSauvegarder)
+			{
+				String path = "";
+				this.ctrl.sauvegarderGraphe(path);
+			}
 			/* Préférences */
 			if (e.getSource() == this.menuiPreferencesThemesClair)
 				this.ctrl.changerTheme("clair");

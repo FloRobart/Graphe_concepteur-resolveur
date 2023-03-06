@@ -4,6 +4,8 @@ import org.jdom2.Element;
 import org.jdom2.input.SAXBuilder;
 
 import java.awt.Color;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -37,6 +39,46 @@ public class Metier
 	/*===================*/
     /* Gestion du graphe */
     /*===================*/
+	/*---------*/
+	/* FIchier */
+	/*---------*/
+	/**
+     * Permet de charger un graphe depuis un fichier
+     * @param path : Chemin du fichier
+     */
+    public void chargerGraphe(String path)
+	{
+		// 
+	}
+
+    /**
+     * Permet de sauvegarder le graphe dans un fichier
+     * @param path : Chemin du fichier
+     */
+    public void sauvegarderGraphe(String path)
+	{
+		File file = new File(path);
+		if (file.exists())
+			file.delete();
+		try
+		{
+			PrintWriter pw = new PrintWriter(new File(path));
+
+			for (Node node : this.lstNode)
+			{
+				String line = node.getName() + "{";
+				for (Node voisin : node.getNeighbors())
+					line += voisin.getName() + node.getCout(voisin) + ",";
+
+				line = line.substring(0, line.length()-1) + "}";
+				pw.println(line);
+			}
+
+			pw.close();
+		}
+		catch (FileNotFoundException e) { e.printStackTrace(); System.out.println("Erreur lors de l'ouverture du fichier en écriture"); }
+	}
+
     /*----------------*/
     /* Panel création */
     /*----------------*/

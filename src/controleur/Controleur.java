@@ -25,6 +25,21 @@ public class Controleur
     /*===================*/
     /* Gestion du graphe */
     /*===================*/
+    /*---------*/
+    /* FIchier */
+    /*---------*/
+    /**
+     * Permet de charger un graphe depuis un fichier
+     * @param path : Chemin du fichier
+     */
+    public void chargerGraphe(String path) { this.metier.chargerGraphe(path); }
+
+    /**
+     * Permet de sauvegarder le graphe dans un fichier
+     * @param path : Chemin du fichier
+     */
+    public void sauvegarderGraphe(String path) { this.metier.sauvegarderGraphe(path); }
+
     /*----------------*/
     /* Panel création */
     /*----------------*/
