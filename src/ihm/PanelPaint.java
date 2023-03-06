@@ -109,12 +109,12 @@ public class PanelPaint extends JPanel implements MouseListener, MouseMotionList
             g2.drawOval(x1, y1, x2, y2);
 
             // draw the arrow count
-            g2.setFont(new Font("Arial", Font.BOLD, node.getWidth()));
-            FontMetrics fm = g2.getFontMetrics();
-            Rectangle2D r = fm.getStringBounds(node.getNeighbors().size() + "", g2);
-            int x = (int) (x1 + (x2 - r.getWidth()) / 2);
-            int y = (int) (y1 + (y2 - r.getHeight()) / 2 + fm.getAscent());
-            g2.drawString(node.getCout(voisin) + "", x, y);
+            //g2.setFont(new Font("Arial", Font.BOLD, node.getWidth()));
+            //FontMetrics fm = g2.getFontMetrics();
+            //Rectangle2D r = fm.getStringBounds(node.getNeighbors().size() + "", g2);
+            //int x = (int) (x1 + (x2 - r.getWidth()) / 2);
+            //int y = (int) (y1 + (y2 - r.getHeight()) / 2 + fm.getAscent());
+            //g2.drawString(node.getCout(voisin) + "", x, y);
         }
         else
         {
