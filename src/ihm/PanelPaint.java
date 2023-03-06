@@ -62,24 +62,7 @@ public class PanelPaint extends JPanel implements MouseListener, MouseMotionList
         {
             for (Node voisin : node.getNeighbors())
             {
-                if (node == voisin)
-                {
-                    this.drawArrow(g2, (node.getX() - (int)(node.getWidth ()/1.5)) + (int)(((int)(node.getWidth ()*1.5))/1.5),
-                                       (node.getY() - (int)(node.getHeight()/1.5)) + (int)(((int)(node.getHeight()*1.5))/1.5),
-                                       (int)(node.getWidth ()*1.5),
-                                       (int)(node.getHeight()*1.5),
-                                       node, voisin);
-                }
-                else
-                {
-                    int xVoisin = voisin.getX() + voisin.getWidth() / 2;
-                    int yVoisin = voisin.getY() + voisin.getHeight() / 2;
-
-                    xVoisin = node.getX() > voisin.getX() ? xVoisin + voisin.getWidth() / 2 : xVoisin - voisin.getWidth() / 2;
-                    yVoisin = node.getY() > voisin.getY() ? yVoisin + voisin.getWidth() / 2 : yVoisin - voisin.getWidth() / 2;
-
-                    this.drawArrow(g2, node.getX() + node.getWidth() / 2, node.getY() + node.getHeight() / 2, xVoisin, yVoisin, node, voisin);
-                }
+                this.drawArrow(g2, node, voisin);
             }
         }
 
@@ -97,8 +80,10 @@ public class PanelPaint extends JPanel implements MouseListener, MouseMotionList
      * @param x2 : coordonnée x du point d'arrivée
      * @param y2 : coordonnée y du point d'arrivée
      */
-    private void drawArrow(Graphics2D g2, int x1, int y1, int x2, int y2, Node node, Node voisin)
+    private void drawArrow(Graphics2D g2, Node node, Node voisin)
     {
+        int x1, x2, y1, y2;
+        
         g2.setColor(this.ctrl.getTheme().get("background"));
 
         // Draw the line
@@ -106,6 +91,11 @@ public class PanelPaint extends JPanel implements MouseListener, MouseMotionList
 
         if (node == voisin)
         {
+            x1 = (node.getX() - (int)(node.getWidth ()/1.5)) + (int)(((int)(node.getWidth ()*1.5))/1.5);
+            y1 = (node.getY() - (int)(node.getHeight()/1.5)) + (int)(((int)(node.getHeight()*1.5))/1.5);
+            x2 = (int)(node.getWidth ()*1.5);
+            y2 = (int)(node.getHeight()*1.5);
+            
             g2.drawOval(x1, y1, x2, y2);
 
             // draw the arrow count
@@ -118,18 +108,28 @@ public class PanelPaint extends JPanel implements MouseListener, MouseMotionList
         }
         else
         {
-            g2.drawLine(x1, y1, x2, y2);
-            
-            // Draw the arrow head
-            double angle = Math.atan2(y2 - y1, x2 - x1);
-            int arrowLength = 20;
-            int x3 = x2 - (int) (arrowLength * Math.cos(angle - Math.PI/6));
-            int y3 = y2 - (int) (arrowLength * Math.sin(angle - Math.PI/6));
-            int x4 = x2 - (int) (arrowLength * Math.cos(angle + Math.PI/6));
-            int y4 = y2 - (int) (arrowLength * Math.sin(angle + Math.PI/6));
-            g2.drawLine(x2, y2, x3, y3);
-            g2.drawLine(x2, y2, x4, y4);
+            //Arrow Line
+            x1 = node.getX() + (int) (node.getWidth() /2);
+            y1 = node.getY() + (int) (node.getHeight()/2);
 
+            x2 = voisin.getX() + (int) (voisin.getWidth() /2);
+            y2 = voisin.getY() + (int) (voisin.getHeight()/2);
+            
+            g2.drawLine(x1, y1, x2, y2);
+
+            //Arrow Head
+            double angle = Math.atan2(y2 - y1, x2 - x1) * 180 / Math.PI;
+
+            x1 = voisin.getX() + (int) ((voisin.getWidth ()/2) - ((voisin.getWidth ()/2)*Math.cos(Math.toRadians(angle))));
+            y1 = voisin.getY() + (int) ((voisin.getHeight()/2) - ((voisin.getHeight()/2)*Math.sin(Math.toRadians(angle))));
+
+            x2 = x1 - (int) (25*Math.cos(Math.toRadians(angle))) + (int) (15*Math.sin(Math.toRadians(angle)));
+            y2 = y1 - (int) (25*Math.sin(Math.toRadians(angle))) - (int) (15*Math.cos(Math.toRadians(angle)));
+            g2.drawLine(x1, y1, x2, y2);
+
+            x2 = x1 - (int) (25*Math.cos(Math.toRadians(angle))) - (int) (15*Math.sin(Math.toRadians(angle)));
+            y2 = y1 - (int) (25*Math.sin(Math.toRadians(angle))) + (int) (15*Math.cos(Math.toRadians(angle)));
+            g2.drawLine(x1, y1, x2, y2);
 
             // affichage du cout de l'arête
             //g2.setFont(new Font("Arial", 0, node.getWidth()));
