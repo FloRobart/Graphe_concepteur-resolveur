@@ -141,8 +141,7 @@ public class Node
     public int getCout(Node nodeDestination)
     {
         if (nodeDestination == null) throw new IllegalArgumentException("Le node de destination ne peut pas être null");
-        if (nodeDestination == this) throw new IllegalArgumentException("Le node de destination ne peut pas être le node courant");
-        if (!nodeDestination.isNeighbor(this)) throw new IllegalArgumentException("Le node n'est pas un voisin du node courant");
+        if (!this.isNeighbor(nodeDestination)) throw new IllegalArgumentException("Le node n'est pas un voisin du node courant");
 
         for(int i = 0; i < this.lstNeighbors.size(); i++)
             if(this.lstNeighbors.get(i) == nodeDestination)

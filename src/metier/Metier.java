@@ -17,7 +17,6 @@ import controleur.Controleur;
 
 public class Metier
 {
-	private static final String PATH_FOLDER_GRAPHE = "./bin/donnees/graphe/";
     private Controleur ctrl;
 
     private HashMap<String, Color> hmColorTheme;

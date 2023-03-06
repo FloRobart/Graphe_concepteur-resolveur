@@ -46,7 +46,7 @@ public class PanelPaint extends JPanel implements MouseListener, MouseMotionList
     }
 
     @Override
-    public void paint(Graphics g) 
+    public void paint(Graphics g)
     {
 		super.paint(g);
 
@@ -55,7 +55,6 @@ public class PanelPaint extends JPanel implements MouseListener, MouseMotionList
 		// affichage de la couleur de fond
 		g2.setColor(this.ctrl.getTheme().get("titlesBackground"));
 		g2.fillRect(0, 0, taillePlateau[0], taillePlateau[1]);
-
 
         // affichage des liens
         for (Node node : this.ctrl.getNodes())
@@ -99,12 +98,9 @@ public class PanelPaint extends JPanel implements MouseListener, MouseMotionList
             g2.drawOval(x1, y1, x2, y2);
 
             // draw the arrow count
-            //g2.setFont(new Font("Arial", Font.BOLD, node.getWidth()));
-            //FontMetrics fm = g2.getFontMetrics();
-            //Rectangle2D r = fm.getStringBounds(node.getNeighbors().size() + "", g2);
-            //int x = (int) (x1 + (x2 - r.getWidth()) / 2);
-            //int y = (int) (y1 + (y2 - r.getHeight()) / 2 + fm.getAscent());
-            //g2.drawString(node.getCout(voisin) + "", x, y);
+            g2.setFont(new Font("Arial", Font.BOLD, (int)(node.getWidth()*0.8)));
+            g2.setColor(this.ctrl.getTheme().get("foreground"));
+            g2.drawString(""+node.getCout(voisin), x1+x2, y1+y2+y2/3);
         }
         else
         {
@@ -131,12 +127,22 @@ public class PanelPaint extends JPanel implements MouseListener, MouseMotionList
             y2 = y1 - (int) (25*Math.sin(Math.toRadians(angle))) + (int) (15*Math.cos(Math.toRadians(angle)));
             g2.drawLine(x1, y1, x2, y2);
 
+
             // affichage du cout de l'arête
-            //g2.setFont(new Font("Arial", 0, node.getWidth()));
-            //if (Math.abs(node.getX()-voisin.getX()) > Math.abs(node.getY()-voisin.getY()))
-            //    g2.drawString(""+node.getCout(voisin), (node.getX() + voisin.getX()) / 2, ((node.getY() + voisin.getY()) / 2)+20);
-            //else
-            //    g2.drawString(""+node.getCout(voisin), ((node.getX() + voisin.getX()) / 2)+20, (node.getY() + voisin.getY()) / 2);
+            int xOrig = (node  .getX() + (int)(node  .getWidth() /2));
+            int yOrig = (node  .getY() + (int)(node  .getHeight()/2));
+            int xDest = (voisin.getX() + (int)(voisin.getWidth() /2));
+            int yDest = (voisin.getY() + (int)(voisin.getHeight()/2));
+
+            int xSection = (xOrig + xDest) / 2;
+            int ySection = (yOrig + yDest) / 2;
+
+            g2.setColor(this.ctrl.getTheme().get("foreground"));
+            g2.setFont(new Font("Arial", 0, node.getWidth()));
+            if (Math.abs(xOrig-xDest) > Math.abs(yOrig-yDest))
+                g2.drawString(""+node.getCout(voisin), xSection, ySection+20);
+            else
+                g2.drawString(""+node.getCout(voisin), xSection+20, ySection);
         }
     }
 
