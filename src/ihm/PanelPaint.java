@@ -64,13 +64,11 @@ public class PanelPaint extends JPanel implements MouseListener, MouseMotionList
             {
                 if (node == voisin)
                 {
-                    g2.setColor(this.ctrl.getTheme().get("background"));
-                    g2.setStroke(new BasicStroke(2));
-                    g2.drawOval((node.getX() - (int)(node.getWidth ()/1.5)) + (int)(((int)(node.getWidth ()*1.5))/1.5),
-                                (node.getY() - (int)(node.getHeight()/1.5)) + (int)(((int)(node.getHeight()*1.5))/1.5),
-                                (int)(node.getWidth ()*1.5),
-                                (int)(node.getHeight()*1.5));
-                    g2.setColor(this.ctrl.getTheme().get("titlesBackground"));
+                    this.drawArrow(g2, (node.getX() - (int)(node.getWidth ()/1.5)) + (int)(((int)(node.getWidth ()*1.5))/1.5),
+                                       (node.getY() - (int)(node.getHeight()/1.5)) + (int)(((int)(node.getHeight()*1.5))/1.5),
+                                       (int)(node.getWidth ()*1.5),
+                                       (int)(node.getHeight()*1.5),
+                                       node, voisin);
                 }
                 else
                 {
@@ -80,7 +78,7 @@ public class PanelPaint extends JPanel implements MouseListener, MouseMotionList
                     xVoisin = node.getX() > voisin.getX() ? xVoisin + voisin.getWidth() / 2 : xVoisin - voisin.getWidth() / 2;
                     yVoisin = node.getY() > voisin.getY() ? yVoisin + voisin.getWidth() / 2 : yVoisin - voisin.getWidth() / 2;
 
-                    this.drawArrow(g2, node.getX() + node.getWidth() / 2, node.getY() + node.getHeight() / 2, xVoisin, yVoisin);
+                    this.drawArrow(g2, node.getX() + node.getWidth() / 2, node.getY() + node.getHeight() / 2, xVoisin, yVoisin, node, voisin);
                 }
             }
         }
@@ -99,55 +97,47 @@ public class PanelPaint extends JPanel implements MouseListener, MouseMotionList
      * @param x2 : coordonnée x du point d'arrivée
      * @param y2 : coordonnée y du point d'arrivée
      */
-    private void drawArrow(Graphics2D g2, int x1, int y1, int x2, int y2)
+    private void drawArrow(Graphics2D g2, int x1, int y1, int x2, int y2, Node node, Node voisin)
     {
         g2.setColor(this.ctrl.getTheme().get("background"));
 
         // Draw the line
         g2.setStroke(new BasicStroke(2));
-        g2.drawLine(x1, y1, x2, y2);
-        
-        // Draw the arrow head
-        double angle = Math.atan2(y2 - y1, x2 - x1);
-        int arrowLength = 20;
-        int x3 = x2 - (int) (arrowLength * Math.cos(angle - Math.PI/6));
-        int y3 = y2 - (int) (arrowLength * Math.sin(angle - Math.PI/6));
-        int x4 = x2 - (int) (arrowLength * Math.cos(angle + Math.PI/6));
-        int y4 = y2 - (int) (arrowLength * Math.sin(angle + Math.PI/6));
-        g2.drawLine(x2, y2, x3, y3);
-        g2.drawLine(x2, y2, x4, y4);
 
-        // affichage du cout du lien
-        //g2.setFont(new Font("Arial", Font.BOLD, 20));
-        //FontMetrics fm = g2.getFontMetrics();
-        //Rectangle2D rect = fm.getStringBounds(String.valueOf(this.ctrl.getCost(this.nodeSelected, this.ctrl.getNode(x2, y2))), g2);
-        //g2.drawString(String.valueOf(this.ctrl.getCost(this.nodeSelected, this.ctrl.getNode(x2, y2))), x1 + (x2 - x1)/2 - (int) rect.getWidth()/2, y1 + (y2 - y1)/2 - (int) rect.getHeight()/2);
+        if (node == voisin)
+        {
+            g2.drawOval(x1, y1, x2, y2);
+
+            // draw the arrow count
+            g2.setFont(new Font("Arial", Font.BOLD, node.getWidth()));
+            FontMetrics fm = g2.getFontMetrics();
+            Rectangle2D r = fm.getStringBounds(node.getNeighbors().size() + "", g2);
+            int x = (int) (x1 + (x2 - r.getWidth()) / 2);
+            int y = (int) (y1 + (y2 - r.getHeight()) / 2 + fm.getAscent());
+            g2.drawString(node.getCout(voisin) + "", x, y);
+        }
+        else
+        {
+            g2.drawLine(x1, y1, x2, y2);
+            
+            // Draw the arrow head
+            double angle = Math.atan2(y2 - y1, x2 - x1);
+            int arrowLength = 20;
+            int x3 = x2 - (int) (arrowLength * Math.cos(angle - Math.PI/6));
+            int y3 = y2 - (int) (arrowLength * Math.sin(angle - Math.PI/6));
+            int x4 = x2 - (int) (arrowLength * Math.cos(angle + Math.PI/6));
+            int y4 = y2 - (int) (arrowLength * Math.sin(angle + Math.PI/6));
+            g2.drawLine(x2, y2, x3, y3);
+            g2.drawLine(x2, y2, x4, y4);
 
 
-
-
-
-        //xOrig = (tube.getCuveA().getPosition().x());
-        //yOrig = (tube.getCuveA().getPosition().y());
-        //xDest = (tube.getCuveB().getPosition().x());
-        //yDest = (tube.getCuveB().getPosition().y());
-//
-        //xSection = (xOrig + xDest) / 2;
-        //ySection = (yOrig + yDest) / 2;
-//
-        //// Dessin des tubes
-        //g.setColor(Color.GRAY);
-        //Graphics2D g2 = (Graphics2D) g;
-        //g2.setStroke(new java.awt.BasicStroke(tube.getSection()));
-        //g2.drawLine(xOrig, yOrig, xDest, yDest);
-//
-        //// affichage de la section des tubes
-        //g.setColor(Color.BLACK);
-        //g2.setStroke(new java.awt.BasicStroke(1));
-        //if (abs(xOrig-xDest) > abs(yOrig-yDest))
-        //    g.drawString(""+tube.getSection(), xSection, ySection+20);
-        //else
-        //    g.drawString(""+tube.getSection(), xSection+20, ySection);
+            // affichage du cout de l'arête
+            //g2.setFont(new Font("Arial", 0, node.getWidth()));
+            //if (Math.abs(node.getX()-voisin.getX()) > Math.abs(node.getY()-voisin.getY()))
+            //    g2.drawString(""+node.getCout(voisin), (node.getX() + voisin.getX()) / 2, ((node.getY() + voisin.getY()) / 2)+20);
+            //else
+            //    g2.drawString(""+node.getCout(voisin), ((node.getX() + voisin.getX()) / 2)+20, (node.getY() + voisin.getY()) / 2);
+        }
     }
 
 
