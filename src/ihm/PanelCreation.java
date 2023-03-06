@@ -1,40 +1,30 @@
 package ihm;
 
-import controleur.Controleur;
-import metier.Node;
-
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.lang.StackWalker.Option;
 
-import javax.swing.JPanel;
-import javax.swing.JButton;
-import javax.swing.JButton;
-import javax.swing.JButton;
+import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
-import javax.swing.JComboBox;
-import javax.swing.JScrollPane;
-import javax.swing.LayoutStyle;
-import javax.swing.ListModel;
-import javax.swing.JScrollPane;
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
+import javax.swing.JPanel;
+
+import controleur.Controleur;
+import metier.Node;
 
 
 public class PanelCreation extends JPanel implements ActionListener
 {
     private Controleur ctrl;
                  
-    private JButton          btnAddNode;
+    private JButton         btnAddNode;
     private JComboBox<Node> cbNodeA;
     private JComboBox<Node> cbNodeB;
-    private JButton          btnAddEdge;
-    private JButton          btnFindShortPath;
-    private JButton          btnFindAbsorbingCircuit;
+    private JButton         btnAddEdge;
+    private JButton         btnFindShortPath;
+    private JButton         btnFindAbsorbingCircuit;
 
 
     public PanelCreation(Controleur ctrl)
@@ -146,7 +136,7 @@ public class PanelCreation extends JPanel implements ActionListener
      * Permet de supprimer un noeud de la JList de l'ihm
      * @param node : Node à supprimer
      */
-    public void deleteNodeInJList(Node node)
+    public void removeNodeInJList(Node node)
     {
         this.cbNodeA.removeItem(node);
         this.cbNodeB.removeItem(node);
@@ -163,16 +153,21 @@ public class PanelCreation extends JPanel implements ActionListener
         }
         else if(ae.getSource() == this.btnAddEdge)
         {
-            if (this.cbNodeA.getSelectedItem() != null && this.cbNodeB.getSelectedItem() != null)
+            if (this.cbNodeA.getSelectedItem() != null && this.cbNodeB.getSelectedItem() != null && !(((Node)this.cbNodeA.getSelectedItem()).isNeighbor((Node)this.cbNodeB.getSelectedItem())))
             {
                 String cout = "";
                 do
                 {
                     cout = JOptionPane.showInputDialog(this.ctrl.getFramePrincipale(), "cout de l'arête : ", "Ajout d'une arête", JOptionPane.QUESTION_MESSAGE);
+                    if (cout == null)
+                        break;
                 }while(!cout.matches("[0-9]+"));
 
-                this.ctrl.addEdge((Node)(this.cbNodeA.getSelectedItem()), (Node)(this.cbNodeB.getSelectedItem()), Integer.parseInt(cout));
-                this.ctrl.majIhm();
+                if (cout != null)
+                {
+                    this.ctrl.addEdge((Node)(this.cbNodeA.getSelectedItem()), (Node)(this.cbNodeB.getSelectedItem()), Integer.parseInt(cout));
+                    this.ctrl.majIhm();
+                }
             }
         }
         else if(ae.getSource() == this.btnFindShortPath)

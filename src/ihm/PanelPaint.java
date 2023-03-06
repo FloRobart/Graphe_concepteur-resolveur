@@ -1,29 +1,15 @@
 package ihm;
 
 import java.awt.BasicStroke;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Point;
-import java.awt.Shape;
-import java.awt.geom.AffineTransform;
-import java.awt.geom.Rectangle2D;
-import java.awt.geom.RoundRectangle2D;
-import java.awt.image.BufferedImage;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-import java.awt.event.MouseWheelEvent;
-import java.awt.event.MouseWheelListener;
+import java.awt.geom.Rectangle2D;
 
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
@@ -38,7 +24,6 @@ public class PanelPaint extends JPanel implements MouseListener, MouseMotionList
     private Controleur ctrl;
 
     private Node nodeSelected;
-    private PopUpMenu popUpMenu;
 
     private int[] taillePlateau;
 
@@ -48,7 +33,6 @@ public class PanelPaint extends JPanel implements MouseListener, MouseMotionList
         this.ctrl = ctrl;
 
         this.nodeSelected = null;
-        this.popUpMenu = new PopUpMenu(this.ctrl);
 
         this.taillePlateau = taillePlateau;
 		this.setBorder(BorderFactory.createLineBorder(this.ctrl.getTheme().get("titlesBackground"), 2));
@@ -78,13 +62,26 @@ public class PanelPaint extends JPanel implements MouseListener, MouseMotionList
         {
             for (Node voisin : node.getNeighbors())
             {
-                int xVoisin = voisin.getX() + voisin.getWidth() / 2;
-                int yVoisin = voisin.getY() + voisin.getHeight() / 2;
+                if (node == voisin)
+                {
+                    g2.setColor(this.ctrl.getTheme().get("background"));
+                    g2.setStroke(new BasicStroke(2));
+                    g2.drawOval((node.getX() - (int)(node.getWidth ()/1.5)) + (int)(((int)(node.getWidth ()*1.5))/1.5),
+                                (node.getY() - (int)(node.getHeight()/1.5)) + (int)(((int)(node.getHeight()*1.5))/1.5),
+                                (int)(node.getWidth ()*1.5),
+                                (int)(node.getHeight()*1.5));
+                    g2.setColor(this.ctrl.getTheme().get("titlesBackground"));
+                }
+                else
+                {
+                    int xVoisin = voisin.getX() + voisin.getWidth() / 2;
+                    int yVoisin = voisin.getY() + voisin.getHeight() / 2;
 
-                xVoisin = node.getX() > voisin.getX() ? xVoisin + voisin.getWidth() / 2 : xVoisin - voisin.getWidth() / 2;
-                yVoisin = node.getY() > voisin.getY() ? yVoisin + voisin.getWidth() / 2 : yVoisin - voisin.getWidth() / 2;
+                    xVoisin = node.getX() > voisin.getX() ? xVoisin + voisin.getWidth() / 2 : xVoisin - voisin.getWidth() / 2;
+                    yVoisin = node.getY() > voisin.getY() ? yVoisin + voisin.getWidth() / 2 : yVoisin - voisin.getWidth() / 2;
 
-                this.drawArrow(g2, node.getX() + node.getWidth() / 2, node.getY() + node.getHeight() / 2, xVoisin, yVoisin);
+                    this.drawArrow(g2, node.getX() + node.getWidth() / 2, node.getY() + node.getHeight() / 2, xVoisin, yVoisin);
+                }
             }
         }
 
@@ -105,28 +102,20 @@ public class PanelPaint extends JPanel implements MouseListener, MouseMotionList
     private void drawArrow(Graphics2D g2, int x1, int y1, int x2, int y2)
     {
         g2.setColor(this.ctrl.getTheme().get("background"));
-        if (x1 == x2 && y1 == y2)
-        {
-            // Draw a circle
-            g2.setStroke(new BasicStroke(2));
-            g2.drawOval(x1 - 10, y1 - 10, 20, 20);
-        }
-        else 
-        {
-            // Draw the line
-            g2.setStroke(new BasicStroke(2));
-            g2.drawLine(x1, y1, x2, y2);
-            
-            // Draw the arrow head
-            double angle = Math.atan2(y2 - y1, x2 - x1);
-            int arrowLength = 20;
-            int x3 = x2 - (int) (arrowLength * Math.cos(angle - Math.PI/6));
-            int y3 = y2 - (int) (arrowLength * Math.sin(angle - Math.PI/6));
-            int x4 = x2 - (int) (arrowLength * Math.cos(angle + Math.PI/6));
-            int y4 = y2 - (int) (arrowLength * Math.sin(angle + Math.PI/6));
-            g2.drawLine(x2, y2, x3, y3);
-            g2.drawLine(x2, y2, x4, y4);
-        }
+
+        // Draw the line
+        g2.setStroke(new BasicStroke(2));
+        g2.drawLine(x1, y1, x2, y2);
+        
+        // Draw the arrow head
+        double angle = Math.atan2(y2 - y1, x2 - x1);
+        int arrowLength = 20;
+        int x3 = x2 - (int) (arrowLength * Math.cos(angle - Math.PI/6));
+        int y3 = y2 - (int) (arrowLength * Math.sin(angle - Math.PI/6));
+        int x4 = x2 - (int) (arrowLength * Math.cos(angle + Math.PI/6));
+        int y4 = y2 - (int) (arrowLength * Math.sin(angle + Math.PI/6));
+        g2.drawLine(x2, y2, x3, y3);
+        g2.drawLine(x2, y2, x4, y4);
     }
 
 
@@ -147,16 +136,6 @@ public class PanelPaint extends JPanel implements MouseListener, MouseMotionList
         FontMetrics fm = g2.getFontMetrics();
         Rectangle2D rect = fm.getStringBounds(name, g2);
         g2.drawString(name, x - (int) rect.getWidth()/2 + width/2, y - (int) rect.getHeight()/2 + 5);
-    }
-
-    /**
-     * Applique le thème à tous les composants du panel
-     */
-    public void appliquerTheme()
-    {
-        this.setBackground(this.ctrl.getTheme().get("titlesBackground"));
-        if (this.popUpMenu != null)
-            this.popUpMenu.appliquerTheme();
     }
 
     @Override
@@ -210,10 +189,14 @@ public class PanelPaint extends JPanel implements MouseListener, MouseMotionList
                 if (me.getX() > node.getX() - node.getWidth () && me.getX() < node.getX() + node.getWidth() &&
                     me.getY() > node.getY() - node.getHeight() && me.getY() < node.getY() + node.getHeight() )
                 {
-                    this.popUpMenu.show(this, me.getX(), me.getY(), node);
+                    this.nodeSelected = node;
+                    new PopUpMenu(this.ctrl, node).show(this, me.getX(), me.getY());
                     break;
                 }
             }
+
+            if (this.nodeSelected == null)
+                new PopUpMenu(this.ctrl, me.getX(), me.getY()).show(this, me.getX(), me.getY());
         }
     }
 
@@ -223,4 +206,12 @@ public class PanelPaint extends JPanel implements MouseListener, MouseMotionList
     public void mouseEntered(MouseEvent me) {}
     @Override
     public void mouseExited(MouseEvent me) {}
+
+    /**
+     * Applique le thème à tous les composants du panel
+     */
+    public void appliquerTheme()
+    {
+        this.setBackground(this.ctrl.getTheme().get("titlesBackground"));
+    }
 }

@@ -10,7 +10,6 @@ import java.util.HashMap;
 import java.util.List;
 
 import controleur.Controleur;
-import ihm.FramePrincipale;
 
 
 public class Metier
@@ -47,6 +46,15 @@ public class Metier
     public void addNode()
 	{
 		this.lstNode.add(new Node(defineName("A")));
+		this.ctrl.addNodeInJList(this.lstNode.get(this.lstNode.size()-1));
+	}
+
+	/**
+     * Permet d'ajouter un noeud au graphe
+     */
+    public void addNode(int x, int y)
+	{
+		this.lstNode.add(new Node(defineName("A"), x, y));
 		this.ctrl.addNodeInJList(this.lstNode.get(this.lstNode.size()-1));
 	}
 
@@ -121,7 +129,7 @@ public class Metier
      * Permet de supprimer un noeud de la JList de l'ihm
      * @param node : Node à supprimer
      */
-    public void deleteNode(Node node)
+    public void removeNode(Node node)
 	{
 		this.lstNode.remove(node);
 	}

@@ -21,12 +21,17 @@ public class Node
 
     public Node(String name)
     {
+        this(name, 100, 100);
+    }
+
+    public Node(String name, int x, int y)
+    {
         this.name = name;
         this.lstNeighbors = new ArrayList<Node>();
         this.listCout = new ArrayList<Integer>();
 
-        this.x = 100;
-        this.y = 100;
+        this.x = x;
+        this.y = y;
 
         this.width  = Node.DEFAULT_WIDTH;
         this.height = Node.DEFAULT_HEIGHT;
@@ -60,7 +65,7 @@ public class Node
     public void removeNeighbor(Node nodeToRemove)
     {
         if (nodeToRemove == null) throw new IllegalArgumentException("Le node ne peut pas être null");
-        if (!nodeToRemove.isVoisin(this)) throw new IllegalArgumentException("Le node n'est pas un voisin du node courant");
+        if (!this.isNeighbor(nodeToRemove)) throw new IllegalArgumentException("Le node n'est pas un voisin du node courant");
 
         for (int i = 0; i < this.lstNeighbors.size(); i++)
         {
@@ -74,6 +79,16 @@ public class Node
     }
 
     /**
+     * Permet de supprimer un voisin du node
+     * @param nameNodeToRemove : nom du noeud à supprimer
+     */
+    public void removeNeighbor(String nameNodeToRemove)
+    {
+        for (Node n : this.lstNeighbors)
+            if (n.getName().equals(nameNodeToRemove)) { this.removeNeighbor(n); break; }
+    }
+
+    /**
      * Permet de récupérer la liste des voisins du node
      * @return Liste des voisins
      */
@@ -84,16 +99,11 @@ public class Node
      * @param node : Node à tester
      * @return True si le node est un voisin, false sinon
      */
-    public boolean isVoisin(Node node)
+    public boolean isNeighbor(Node node)
     {
         if (node == null) throw new IllegalArgumentException("Le node ne peut pas être null");
-        if (node == this) throw new IllegalArgumentException("Le node ne peut pas être le node courant");
 
-        for (Node n : this.lstNeighbors)
-            if (n == node)
-                return true;
-
-        return false;
+        return this.lstNeighbors.contains(node);
     }
 
     /**
@@ -111,7 +121,7 @@ public class Node
     {
         if (nodeDestination == null) throw new IllegalArgumentException("Le node de destination ne peut pas être null");
         if (nodeDestination == this) throw new IllegalArgumentException("Le node de destination ne peut pas être le node courant");
-        if (!nodeDestination.isVoisin(this)) throw new IllegalArgumentException("Le node n'est pas un voisin du node courant");
+        if (!nodeDestination.isNeighbor(this)) throw new IllegalArgumentException("Le node n'est pas un voisin du node courant");
 
         for(int i = 0; i < this.lstNeighbors.size(); i++)
             if(this.lstNeighbors.get(i) == nodeDestination)

@@ -36,6 +36,15 @@ public class Controleur
     public void addNode() { this.metier.addNode(); }
 
     /**
+     * Permet d'ajouter un noeud au graphe.
+     * Le nom du noeud est défini automatiquement.
+     * Le noeud est ajouté à la liste des noeuds du panel de création.
+     * @param x : Position x du noeud
+     * @param y : Position y du noeud
+     */
+    public void addNode(int x, int y) { this.metier.addNode(x, y); }
+
+    /**
      * Permet d'ajouter une arête entre deux noeuds du graphe
      * @param nodeOrig : Node d'origine
      * @param nodeDest : Node de destination
@@ -65,13 +74,13 @@ public class Controleur
      * Permet de supprimer un noeud de la JList de l'ihm
      * @param node : Node à supprimer
      */
-    public void deleteNodeInJList(Node node) { this.ihm.deleteNodeInJList(node); }
+    public void removeNodeInJList(Node node) { this.ihm.removeNodeInJList(node); }
 
     /**
      * Permet de supprimer un noeud
      * @param node : Node à supprimer
      */
-    public void deleteNode(Node node) { this.metier.deleteNode(node); }
+    public void removeNode(Node node) { this.metier.removeNode(node); }
 
 
     /*-------------*/
