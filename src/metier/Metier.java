@@ -10,12 +10,14 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Scanner;
 
 import controleur.Controleur;
 
 
 public class Metier
 {
+	private static final String PATH_FOLDER_GRAPHE = "./bin/donnees/graphe/";
     private Controleur ctrl;
 
     private HashMap<String, Color> hmColorTheme;
@@ -44,34 +46,53 @@ public class Metier
 	/*---------*/
 	/**
      * Permet de charger un graphe depuis un fichier
-     * @param path : Chemin du fichier
+     * @param file : fichier .data contenant le graphe sous forme textuelle
      */
-    public void chargerGraphe(String path)
+    public void chargerGraphe(File file)
 	{
-		// 
+		if (!file.exists()) throw new IllegalArgumentException("Le fichier n'existe pas");
+
+		this.lstNode = new ArrayList<Node>();
+		try
+		{
+			/* Récupération des noeuds */
+			Scanner sc = new Scanner(file);
+			while (sc.hasNextLine())
+				this.lstNode.add(Node.deserializableNode(sc.nextLine().split("\\)")[0]));
+
+			sc.close();
+
+			/* Récupération des voisins */
+			int cpt = 0;
+			sc = new Scanner(file);
+			while (sc.hasNextLine())
+			{
+				String[] ensNeighbors = sc.nextLine().split("\\)");
+				if (ensNeighbors.length >= 2)
+					for (String neighbor : ensNeighbors[1].substring(1).split(","))
+						this.lstNode.get(cpt).addNeighbor(this.getNodeByName(neighbor.split(":")[0]), Integer.parseInt(neighbor.split(":")[1]));
+
+				cpt++;
+			}
+
+			sc.close();
+		}
+		catch (Exception e) { e.printStackTrace(); System.out.println("Erreur lors de l'ouverture du fichier en lecture"); }
 	}
 
     /**
      * Permet de sauvegarder le graphe dans un fichier
-     * @param path : Chemin du fichier
+     * @param file : fichier .data contenant le graphe sous forme textuelle
      */
-    public void sauvegarderGraphe(String path)
+    public void sauvegarderGraphe(File file)
 	{
-		File file = new File(path);
-		if (file.exists())
-			file.delete();
 		try
 		{
-			PrintWriter pw = new PrintWriter(new File(path));
+			PrintWriter pw = new PrintWriter(file);
 
 			for (Node node : this.lstNode)
 			{
-				String line = node.getName() + "{";
-				for (Node voisin : node.getNeighbors())
-					line += voisin.getName() + node.getCout(voisin) + ",";
-
-				line = line.substring(0, line.length()-1) + "}";
-				pw.println(line);
+				pw.println(node.serializable());
 			}
 
 			pw.close();
@@ -191,6 +212,15 @@ public class Metier
 	 * @return liste de tous les noeuds du graphe
      */
     public List<Node> getNodes() { return this.lstNode; }
+
+	public Node getNodeByName(String name)
+	{
+		for (Node node : this.lstNode)
+			if (node.getName().equals(name))
+				return node;
+
+		return null;
+	}
 
 
 

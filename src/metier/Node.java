@@ -37,13 +37,26 @@ public class Node
         this.height = Node.DEFAULT_HEIGHT;
     }
 
-    public Node(String name, List<Node> lstNeighbors, List<Integer> listCout, int x, int y)
+    public Node(String name, List<Node> lstNeighbors, List<Integer> listCout, int x, int y, int width, int height)
     {
         this.name = name;
         this.lstNeighbors = lstNeighbors == null ? new ArrayList<Node>   () : lstNeighbors;
         this.listCout   = listCout   == null ? new ArrayList<Integer>() : listCout;
         this.x = x;
         this.y = y;
+        this.width = width;
+        this.height = height;
+    }
+
+    public Node(String name, int x, int y, int width, int height)
+    {
+        this.name = name;
+        this.lstNeighbors = new ArrayList<Node>();
+        this.listCout     = new ArrayList<Integer>();
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.height = height;
     }
 
     /**
@@ -93,6 +106,14 @@ public class Node
      * @return Liste des voisins
      */
     public List<Node> getNeighbors() { return this.lstNeighbors; }
+
+    /**
+     * Permet de définir tout les voisins du node.
+     * Attention, cette méthode supprime tous les voisins existants.
+     * Cette méthode est utile pour la méthode deserializable
+     * @param lstNeighbors
+     */
+    public void setNeighbors(List<Node> lstNeighbors) { this.lstNeighbors = lstNeighbors; }
 
     /**
      * Permet de savoir si le node est un voisin du node courant
@@ -179,9 +200,9 @@ public class Node
      */
     public String serializable()
     {
-        String sRet = "";
-
-        // TODO : Sérialiser le noeud
+        String sRet = this.getName() + "(" + this.getX() + "," + this.getY() + "," + this.getWidth() + "," + this.getHeight() + ")";
+        for (Node voisin : this.getNeighbors())
+            sRet += "," + voisin.getName() + ":" + this.getCout(voisin);
 
         return sRet;
     }
@@ -191,14 +212,12 @@ public class Node
      * @param serializedNode : String noeud sous forme textuel (noeud sérialisée)
      * @return noeud créé à partir de la chaine de caractère passée en paramètre
      */
-    public static Node deserializable(String serializedNode)
+    public static Node deserializableNode(String serializedNode)
     {
-        Node node = null;
-
-        // TODO : Désérialiser le noeud
-
-        return node;
+        String[] ensInfo = (serializedNode.replace("(", ",")).split(",");
+        return new Node(ensInfo[0], Integer.parseInt(ensInfo[1]), Integer.parseInt(ensInfo[2]), Integer.parseInt(ensInfo[3]), Integer.parseInt(ensInfo[4]));
     }
+
 
     @Override
     public String toString()

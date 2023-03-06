@@ -3,6 +3,7 @@ package controleur;
 import java.util.HashMap;
 import java.util.List;
 import java.awt.Color;
+import java.io.File;
 
 import ihm.FramePrincipale;
 import metier.Metier;
@@ -30,15 +31,15 @@ public class Controleur
     /*---------*/
     /**
      * Permet de charger un graphe depuis un fichier
-     * @param path : Chemin du fichier
+     * @param file : fichier .data contenant le graphe sous forme textuelle
      */
-    public void chargerGraphe(String path) { this.metier.chargerGraphe(path); }
+    public void chargerGraphe(File file) { this.metier.chargerGraphe(file); }
 
     /**
      * Permet de sauvegarder le graphe dans un fichier
-     * @param path : Chemin du fichier
+     * @param file : fichier .data contenant le graphe sous forme textuelle
      */
-    public void sauvegarderGraphe(String path) { this.metier.sauvegarderGraphe(path); }
+    public void sauvegarderGraphe(File file) { this.metier.sauvegarderGraphe(file); }
 
     /*----------------*/
     /* Panel création */

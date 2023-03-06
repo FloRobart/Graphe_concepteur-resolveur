@@ -12,6 +12,7 @@ import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
 
 import java.awt.event.KeyEvent;
+import java.io.File;
 import java.awt.event.InputEvent;
 
 import controleur.Controleur;
@@ -141,14 +142,23 @@ public class MenuBarre extends JMenuBar implements ActionListener
 			/* Fichier */
 			if (e.getSource() == this.menuiFichiersCharger)
 			{
-				String path = "";
-				this.ctrl.chargerGraphe(path);
+				JFileChooser fc = new JFileChooser("./bin/donnees/graphes/");
+				fc.showOpenDialog(this.ctrl.getFramePrincipale());
+				File file = fc.getSelectedFile();
+				if (file != null)
+				{
+					this.ctrl.chargerGraphe(file);
+					this.ctrl.majIhm();
+				}
 			}
 
 			if (e.getSource() == this.menuiFichiersSauvegarder)
 			{
-				String path = "";
-				this.ctrl.sauvegarderGraphe(path);
+				JFileChooser fc = new JFileChooser("./bin/donnees/graphes/");
+				fc.showSaveDialog(this.ctrl.getFramePrincipale());
+				File file = fc.getSelectedFile();
+				if (file != null)
+					this.ctrl.sauvegarderGraphe(file);
 			}
 			/* Préférences */
 			if (e.getSource() == this.menuiPreferencesThemesClair)
