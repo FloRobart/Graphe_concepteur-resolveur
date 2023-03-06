@@ -11,9 +11,6 @@ import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
 
 import java.awt.event.KeyEvent;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.awt.event.InputEvent;
 
 import controleur.Controleur;
