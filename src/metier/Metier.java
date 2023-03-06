@@ -132,6 +132,12 @@ public class Metier
     public void removeNode(Node node)
 	{
 		this.lstNode.remove(node);
+
+		for (Node n : this.lstNode)
+		{
+			if (n.isNeighbor(node))
+				n.removeNeighbor(node);
+		}
 	}
 
 
