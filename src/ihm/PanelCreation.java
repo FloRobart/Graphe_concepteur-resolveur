@@ -33,42 +33,31 @@ public class PanelCreation extends JPanel implements ActionListener
 
 
         /* Création des composants */
-        this.btnAddNode              = new JButton();
+        this.btnAddNode              = new JButton("Ajouter un noeud");
         this.cbNodeA                 = new JComboBox<Node>();
         this.cbNodeB                 = new JComboBox<Node>();
-        this.btnAddEdge              = new JButton();
-        this.btnFindShortPath        = new JButton();
-        this.btnFindAbsorbingCircuit = new JButton();
+        this.btnAddEdge              = new JButton("Ajouter une arête");
+        this.btnFindShortPath        = new JButton("Trouver le chemin le plus court");
+        this.btnFindAbsorbingCircuit = new JButton("Trouver les circuits absorbant");
 
-        this.setPreferredSize(new Dimension(300, 400));
 
         /* Bouton ajouter noeud */
-        this.btnAddNode.setText("Add node");
-        this.btnAddNode.setMaximumSize  (new Dimension(100, 25));
-        this.btnAddNode.setMinimumSize  (new Dimension(100, 25));
-        this.btnAddNode.setPreferredSize(new Dimension(100, 25));
+        this.btnAddNode.setPreferredSize(new Dimension(250, 25));
 
         /* ComboBox noeud A */
-        this.cbNodeA.setMaximumSize  (new Dimension(50, 75));
-        this.cbNodeA.setMinimumSize  (new Dimension(50, 75));
-        this.cbNodeA.setPreferredSize(new Dimension(50, 75));
+        this.cbNodeA.setPreferredSize(new Dimension(122, 75));
 
         /* ComboBox noeud B */
-        this.cbNodeB.setMaximumSize  (new Dimension(50, 75));
-        this.cbNodeB.setMinimumSize  (new Dimension(50, 75));
-        this.cbNodeB.setPreferredSize(new Dimension(50, 75));
+        this.cbNodeB.setPreferredSize(new Dimension(122, 75));
 
         /* Bouton ajouter arête */
-        this.btnAddEdge.setText("this.btnAddEdge");
-        this.btnAddEdge.setPreferredSize(new Dimension(100, 25));
+        this.btnAddEdge.setPreferredSize(new Dimension(250, 25));
 
         /* Bouton trouver plus court chemin */
-        this.btnFindShortPath.setText("this.btnFindShortPath");
-        this.btnFindShortPath.setPreferredSize(new Dimension(100, 25));
+        this.btnFindShortPath.setPreferredSize(new Dimension(250, 25));
 
         /* Bouton trouver circuit absorbant */
-        this.btnFindAbsorbingCircuit.setText("this.btnFindAbsorbingCircuit");
-        this.btnFindAbsorbingCircuit.setPreferredSize(new Dimension(100, 25));
+        this.btnFindAbsorbingCircuit.setPreferredSize(new Dimension(250, 25));
 
 
         /* Positionnement des composants */

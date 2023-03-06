@@ -116,6 +116,38 @@ public class PanelPaint extends JPanel implements MouseListener, MouseMotionList
         int y4 = y2 - (int) (arrowLength * Math.sin(angle + Math.PI/6));
         g2.drawLine(x2, y2, x3, y3);
         g2.drawLine(x2, y2, x4, y4);
+
+        // affichage du cout du lien
+        //g2.setFont(new Font("Arial", Font.BOLD, 20));
+        //FontMetrics fm = g2.getFontMetrics();
+        //Rectangle2D rect = fm.getStringBounds(String.valueOf(this.ctrl.getCost(this.nodeSelected, this.ctrl.getNode(x2, y2))), g2);
+        //g2.drawString(String.valueOf(this.ctrl.getCost(this.nodeSelected, this.ctrl.getNode(x2, y2))), x1 + (x2 - x1)/2 - (int) rect.getWidth()/2, y1 + (y2 - y1)/2 - (int) rect.getHeight()/2);
+
+
+
+
+
+        //xOrig = (tube.getCuveA().getPosition().x());
+        //yOrig = (tube.getCuveA().getPosition().y());
+        //xDest = (tube.getCuveB().getPosition().x());
+        //yDest = (tube.getCuveB().getPosition().y());
+//
+        //xSection = (xOrig + xDest) / 2;
+        //ySection = (yOrig + yDest) / 2;
+//
+        //// Dessin des tubes
+        //g.setColor(Color.GRAY);
+        //Graphics2D g2 = (Graphics2D) g;
+        //g2.setStroke(new java.awt.BasicStroke(tube.getSection()));
+        //g2.drawLine(xOrig, yOrig, xDest, yDest);
+//
+        //// affichage de la section des tubes
+        //g.setColor(Color.BLACK);
+        //g2.setStroke(new java.awt.BasicStroke(1));
+        //if (abs(xOrig-xDest) > abs(yOrig-yDest))
+        //    g.drawString(""+tube.getSection(), xSection, ySection+20);
+        //else
+        //    g.drawString(""+tube.getSection(), xSection+20, ySection);
     }
 
 

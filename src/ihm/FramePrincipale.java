@@ -20,7 +20,7 @@ public class FramePrincipale extends JFrame
     {
         this.ctrl = ctrl;
         this.setTitle("Frame principale");
-        this.setSize(600, 400);
+        this.setSize(800, 600);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         /* Création des composants */

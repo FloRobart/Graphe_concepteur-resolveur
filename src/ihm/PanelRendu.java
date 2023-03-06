@@ -17,9 +17,6 @@ public class PanelRendu extends JPanel
     {
         this.ctrl = ctrl;
 
-        this.setSize(500, 500);
-        this.setPreferredSize(new Dimension(500, 500));
-
         /* Création des composants */
         this.panelPaint = new PanelPaint(this.ctrl, new int[]{500, 500});
 
