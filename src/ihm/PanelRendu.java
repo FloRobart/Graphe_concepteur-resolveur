@@ -3,6 +3,7 @@ package ihm;
 import java.awt.Color;
 
 import javax.swing.JPanel;
+import java.awt.Toolkit;
 
 import controleur.Controleur;
 
@@ -17,7 +18,7 @@ public class PanelRendu extends JPanel
         this.ctrl = ctrl;
 
         /* Création des composants */
-        this.panelPaint = new PanelPaint(this.ctrl, new int[]{500, 500});
+        this.panelPaint = new PanelPaint(this.ctrl, new int[]{Toolkit.getDefaultToolkit().getScreenSize().width - 300, Toolkit.getDefaultToolkit().getScreenSize().height - 100});
 
 
         /* Ajout des composants */

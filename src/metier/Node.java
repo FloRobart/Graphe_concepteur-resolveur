@@ -15,9 +15,10 @@ public class Node
 
     private int x;
     private int y;
-
     private int width;
     private int height;
+
+    private boolean absorbant;
 
     public Node(String name)
     {
@@ -32,9 +33,10 @@ public class Node
 
         this.x = x;
         this.y = y;
-
         this.width  = Node.DEFAULT_WIDTH;
         this.height = Node.DEFAULT_HEIGHT;
+
+        this.absorbant = false;
     }
 
     public Node(String name, List<Node> lstNeighbors, List<Integer> listCout, int x, int y, int width, int height)
@@ -46,6 +48,8 @@ public class Node
         this.y = y;
         this.width = width;
         this.height = height;
+
+        this.absorbant = false;
     }
 
     public Node(String name, int x, int y, int width, int height)
@@ -57,6 +61,8 @@ public class Node
         this.y = y;
         this.width = width;
         this.height = height;
+
+        this.absorbant = false;
     }
 
     /**
@@ -192,6 +198,18 @@ public class Node
      * @param y : nouvelle position y
      */
     public void setPosition(int x, int y) { this.x = x; this.y = y; }
+
+    /**
+     * Permet de savoir si le node est absorbant
+     * @return True si le node est absorbant, false sinon
+     */
+    public boolean isAbsorbant() { return this.absorbant; }
+
+    /**
+     * Permet de définir si le node est absorbant
+     * @param absorbant : True si le node est absorbant, false sinon
+     */
+    public void setAbsorbant(boolean absorbant) { this.absorbant = absorbant; }
 
     /**
      * Permet de mettre le noeud sous forme textuel (sérialiser) pour l'enregistrer dans un fichier texte

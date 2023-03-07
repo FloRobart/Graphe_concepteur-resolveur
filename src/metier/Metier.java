@@ -73,8 +73,12 @@ public class Metier
 
 				cpt++;
 			}
-
 			sc.close();
+
+			/* Mise à jour de la JList des noeuds */
+			this.ctrl.clearJList();
+			for (Node n : this.lstNode)
+				this.ctrl.addNodeInJList(n);
 		}
 		catch (Exception e) { e.printStackTrace(); System.out.println("Erreur lors de l'ouverture du fichier en lecture"); }
 	}
@@ -179,12 +183,33 @@ public class Metier
 		
 	}
 
-    /**
+	/**
      * Permet de trouver et d'afficher les circuit absorbant du graphe s'il y en a
      */
-    public void findAbsorbingCircuit()
+    public void findAbsorbingCircuit(Node nA, Node nB)
 	{
 		
+	}
+
+    /**
+     * Permet de trouver et d'afficher les noeuds absorbant du graphe s'il y en a
+     */
+    public void findAbsorbingNode()
+	{
+		for (Node node : this.lstNode)
+		{
+			if (node.getNeighbors().size() == 0)
+				node.setAbsorbant(true);
+			else if (node.getNeighbors().size() == 1)
+				if (node.getNeighbors().get(0) == node)
+					node.setAbsorbant(true);
+				else
+					node.setAbsorbant(false);
+			else
+				node.setAbsorbant(false);
+		}
+
+		this.ctrl.majIhm();
 	}
 
 	/**

@@ -25,6 +25,7 @@ public class PanelCreation extends JPanel implements ActionListener
     private JButton         btnAddEdge;
     private JButton         btnFindShortPath;
     private JButton         btnFindAbsorbingCircuit;
+    private JButton         btnFindAbsorbingNode;
 
 
     public PanelCreation(Controleur ctrl)
@@ -39,6 +40,7 @@ public class PanelCreation extends JPanel implements ActionListener
         this.btnAddEdge              = new JButton("Ajouter une arête");
         this.btnFindShortPath        = new JButton("Trouver le chemin le plus court");
         this.btnFindAbsorbingCircuit = new JButton("Trouver les circuits absorbant");
+        this.btnFindAbsorbingNode    = new JButton("Trouver les noeuds absorbants");
 
 
         /* Bouton ajouter noeud */
@@ -59,6 +61,9 @@ public class PanelCreation extends JPanel implements ActionListener
         /* Bouton trouver circuit absorbant */
         this.btnFindAbsorbingCircuit.setPreferredSize(new Dimension(250, 25));
 
+        /* Bouton trouver noeud absorbant */
+        this.btnFindAbsorbingNode.setPreferredSize(new Dimension(250, 25));
+
 
         /* Positionnement des composants */
         GroupLayout layout = new GroupLayout(this);
@@ -73,7 +78,8 @@ public class PanelCreation extends JPanel implements ActionListener
                     .addComponent(this.btnFindAbsorbingCircuit, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(this.btnAddNode, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(this.btnAddEdge, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(this.btnFindShortPath, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(this.btnFindShortPath, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(this.btnFindAbsorbingNode, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addGap(0, 75, Short.MAX_VALUE)
@@ -99,6 +105,8 @@ public class PanelCreation extends JPanel implements ActionListener
                 .addComponent(this.btnFindShortPath, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 45, Short.MAX_VALUE)
                 .addComponent(this.btnFindAbsorbingCircuit, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 45, Short.MAX_VALUE)
+                .addComponent(this.btnFindAbsorbingNode, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(48, Short.MAX_VALUE))
         );
 
@@ -107,6 +115,7 @@ public class PanelCreation extends JPanel implements ActionListener
         this.btnAddEdge             .addActionListener(this);
         this.btnFindShortPath       .addActionListener(this);
         this.btnFindAbsorbingCircuit.addActionListener(this);
+        this.btnFindAbsorbingNode   .addActionListener(this);
     }
 
 
@@ -129,6 +138,15 @@ public class PanelCreation extends JPanel implements ActionListener
     {
         this.cbNodeA.removeItem(node);
         this.cbNodeB.removeItem(node);
+    }
+
+    /**
+     * Permet de supprimer tout les noeuds de la JList de l'ihm
+     */
+    public void clearJList()
+    {
+        this.cbNodeA.removeAllItems();
+        this.cbNodeB.removeAllItems();
     }
 
 
@@ -166,7 +184,12 @@ public class PanelCreation extends JPanel implements ActionListener
         }
         else if(ae.getSource() == this.btnFindAbsorbingCircuit)
         {
-            this.ctrl.findAbsorbingCircuit();
+            if (this.cbNodeA.getSelectedItem() != null && this.cbNodeB.getSelectedItem() != null)
+                this.ctrl.findAbsorbingCircuit((Node)(this.cbNodeA.getSelectedItem()), (Node)(this.cbNodeB.getSelectedItem()));
+        }
+        else if (ae.getSource() == this.btnFindAbsorbingNode)
+        {
+            this.ctrl.findAbsorbingNode();
         }
     }
 
@@ -201,5 +224,8 @@ public class PanelCreation extends JPanel implements ActionListener
 
         this.btnFindAbsorbingCircuit.setBackground(buttonsBackground);  
         this.btnFindAbsorbingCircuit.setForeground(foreGeneralColor);
+
+        this.btnFindAbsorbingNode.setBackground(buttonsBackground);
+        this.btnFindAbsorbingNode.setForeground(foreGeneralColor);
     }
 }

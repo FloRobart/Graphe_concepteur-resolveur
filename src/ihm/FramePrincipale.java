@@ -48,6 +48,11 @@ public class FramePrincipale extends JFrame
     public void addNodeInJList(Node node) { this.panelCreation.addNodeInJList(node); }
 
     /**
+     * Permet de supprimer tout les noeuds de la JList de l'ihm
+     */
+    public void clearJList() { this.panelCreation.clearJList(); }
+
+    /**
      * Permet de mettre à jour l'ihm
      */
     public void majIhm() { this.panelRendu.majIhm(); }

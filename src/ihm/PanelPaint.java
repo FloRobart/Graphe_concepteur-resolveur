@@ -67,8 +67,7 @@ public class PanelPaint extends JPanel implements MouseListener, MouseMotionList
 
         // affichage des noeuds
         for (Node node : this.ctrl.getNodes())
-            this.drawNode(g2, node.getX(), node.getY(), node.getHeight(), node.getHeight(), node.getName());
-        
+            this.drawNode(g2, node);
 	}
 
     /**
@@ -82,29 +81,55 @@ public class PanelPaint extends JPanel implements MouseListener, MouseMotionList
     private void drawArrow(Graphics2D g2, Node node, Node voisin)
     {
         int x1, x2, y1, y2;
-        
-        g2.setColor(this.ctrl.getTheme().get("background"));
 
-        // Draw the line
         g2.setStroke(new BasicStroke(2));
 
         if (node == voisin)
         {
+            /*------------------------*/
+            /* calcule arrow position */
+            /*------------------------*/
             x1 = (node.getX() - (int)(node.getWidth ()/1.5)) + (int)(((int)(node.getWidth ()*1.5))/1.5);
             y1 = (node.getY() - (int)(node.getHeight()/1.5)) + (int)(((int)(node.getHeight()*1.5))/1.5);
             x2 = (int)(node.getWidth ()*1.5);
             y2 = (int)(node.getHeight()*1.5);
-            
-            g2.drawOval(x1, y1, x2, y2);
 
-            // draw the arrow count
+
+            /*----------------------*/
+            /* draw the arrow count */
+            /*----------------------*/
             g2.setFont(new Font("Arial", Font.BOLD, (int)(node.getWidth()*0.8)));
             g2.setColor(this.ctrl.getTheme().get("foreground"));
             g2.drawString(""+node.getCout(voisin), x1+x2, y1+y2+y2/3);
+            
+
+            /*----------------*/
+            /* draw the arrow */
+            /*----------------*/
+            g2.setColor(this.ctrl.getTheme().get("background"));
+            g2.drawOval(x1, y1, x2, y2);
         }
         else
         {
-            //Arrow Line
+            /*------------------------------*/
+            /* affichage du cout de l'arête */
+            /*------------------------------*/
+            int xOrig = (node  .getX());
+            int yOrig = (node  .getY());
+            int xDest = (voisin.getX());
+            int yDest = (voisin.getY());
+
+            int xSection = (xOrig + xDest) / 2;
+            int ySection = (yOrig + yDest) / 2;
+
+            g2.setColor(this.ctrl.getTheme().get("foreground"));
+            g2.setFont(new Font("Arial", 0, node.getWidth()));
+            g2.drawString(""+node.getCout(voisin), xSection, ySection);
+
+
+            /*------------*/
+            /* Arrow Line */
+            /*------------*/
             x1 = node.getX() + (int) (node.getWidth() /2);
             y1 = node.getY() + (int) (node.getHeight()/2);
 
@@ -113,7 +138,9 @@ public class PanelPaint extends JPanel implements MouseListener, MouseMotionList
             
             g2.drawLine(x1, y1, x2, y2);
 
-            //Arrow Head
+            /*------------*/
+            /* Arrow Head */
+            /*------------*/
             double angle = Math.atan2(y2 - y1, x2 - x1) * 180 / Math.PI;
 
             x1 = voisin.getX() + (int) ((voisin.getWidth ()/2) - ((voisin.getWidth ()/2)*Math.cos(Math.toRadians(angle))));
@@ -126,23 +153,6 @@ public class PanelPaint extends JPanel implements MouseListener, MouseMotionList
             x2 = x1 - (int) (25*Math.cos(Math.toRadians(angle))) - (int) (15*Math.sin(Math.toRadians(angle)));
             y2 = y1 - (int) (25*Math.sin(Math.toRadians(angle))) + (int) (15*Math.cos(Math.toRadians(angle)));
             g2.drawLine(x1, y1, x2, y2);
-
-
-            // affichage du cout de l'arête
-            int xOrig = (node  .getX() + (int)(node  .getWidth() /2));
-            int yOrig = (node  .getY() + (int)(node  .getHeight()/2));
-            int xDest = (voisin.getX() + (int)(voisin.getWidth() /2));
-            int yDest = (voisin.getY() + (int)(voisin.getHeight()/2));
-
-            int xSection = (xOrig + xDest) / 2;
-            int ySection = (yOrig + yDest) / 2;
-
-            g2.setColor(this.ctrl.getTheme().get("foreground"));
-            g2.setFont(new Font("Arial", 0, node.getWidth()));
-            if (Math.abs(xOrig-xDest) > Math.abs(yOrig-yDest))
-                g2.drawString(""+node.getCout(voisin), xSection, ySection+20);
-            else
-                g2.drawString(""+node.getCout(voisin), xSection+20, ySection);
         }
     }
 
@@ -154,16 +164,21 @@ public class PanelPaint extends JPanel implements MouseListener, MouseMotionList
      * @param y    : coordonnée y du noeud
      * @param name : nom du noeud
      */
-    private void drawNode(Graphics2D g2, int x, int y, int width, int height, String name)
+    private void drawNode(Graphics2D g2, Node node)
     {
-        g2.setColor(this.ctrl.getTheme().get("foreground"));
-        g2.fillOval(x, y, width, height);
+        if (node.isAbsorbant())
+            g2.setColor(this.ctrl.getTheme().get("disableColor"));
+        else
+            g2.setColor(this.ctrl.getTheme().get("foreground"));
+
+        g2.fillOval(node.getX(), node.getY(), node.getWidth(), node.getHeight());
 
         // affichage du nom du noeud
-        g2.setFont(new Font("Arial", Font.BOLD, width));
+        g2.setColor(this.ctrl.getTheme().get("foreground"));
+        g2.setFont(new Font("Arial", Font.BOLD, node.getWidth()));
         FontMetrics fm = g2.getFontMetrics();
-        Rectangle2D rect = fm.getStringBounds(name, g2);
-        g2.drawString(name, x - (int) rect.getWidth()/2 + width/2, y - (int) rect.getHeight()/2 + 5);
+        Rectangle2D rect = fm.getStringBounds(node.getName(), g2);
+        g2.drawString(node.getName(), node.getX() - (int) rect.getWidth()/2 + node.getWidth()/2, node.getY() - (int) rect.getHeight()/2 + 5);
     }
 
     @Override

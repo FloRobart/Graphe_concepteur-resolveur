@@ -12,3 +12,17 @@
 .\src\ihm\menu\MenuBarre.java  
 .\src\ihm\menu\PopUpMenu.java  
  
+.\src\controleur\Controleur.java  
+ 
+.\src\metier\Metier.java  
+.\src\metier\Path.java  
+.\src\metier\Node.java  
+ 
+.\src\ihm\FramePrincipale.java  
+.\src\ihm\PanelCreation.java  
+.\src\ihm\PanelRendu.java  
+.\src\ihm\PanelPaint.java  
+ 
+.\src\ihm\menu\MenuBarre.java  
+.\src\ihm\menu\PopUpMenu.java  
+ 

@@ -78,7 +78,12 @@ public class Controleur
     /**
      * Permet de trouver et d'afficher les circuit absorbant du graphe s'il y en a
      */
-    public void findAbsorbingCircuit() { this.metier.findAbsorbingCircuit(); }
+    public void findAbsorbingCircuit(Node nA, Node nB) { this.metier.findAbsorbingCircuit(nA, nB); }
+
+    /**
+     * Permet de trouver et d'afficher les noeuds absorbant du graphe s'il y en a
+     */
+    public void findAbsorbingNode() { this.metier.findAbsorbingNode(); }
 
     /**
      * Permet d'ajouter un noeud dans la JList de l'ihm
@@ -91,6 +96,11 @@ public class Controleur
      * @param node : Node à supprimer
      */
     public void removeNodeInJList(Node node) { this.ihm.removeNodeInJList(node); }
+
+    /**
+     * Permet de supprimer tout les noeuds de la JList de l'ihm
+     */
+    public void clearJList() { this.ihm.clearJList(); }
 
     /**
      * Permet de supprimer un noeud
