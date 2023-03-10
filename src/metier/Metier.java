@@ -180,8 +180,48 @@ public class Metier
      */
     public void findShortPath(Node nA, Node nB)
 	{
-		
+		BellmanFord bf = new BellmanFord(this.lstNode);
+		bf.execute(nA);
+		bf.getDistance(nB);
 	}
+
+
+
+	//private static void BellManFord(Graph graph, Node source) {
+    //    
+	//	// Initialisation
+	//	for (Node node : graph) {
+	//
+	//		node.setAttribute("distance", Double.POSITIVE_INFINITY);
+	//		node.setAttribute("parent", "null");
+	//	}
+	//	source.setAttribute("distance", 0);
+	//
+	//	// Algorithme
+	//	for (int i = 0; i < graph.getNodeCount() - 1; i++)
+	//	{
+	//		for (Node node : graph)
+	//		{
+	//			Iterator<Node> it = node.getNeighborNodeIterator();
+	//			while (it.hasNext())
+	//			{
+	//				Node neighbor = it.next();
+	//
+	//				if (node.getEdgeBetween(neighbor) == null) continue;
+	//				double distance = node.getNumber("distance") + node.getEdgeBetween(neighbor).getNumber("length");
+	//
+	//				if (distance < neighbor.getNumber("distance"))
+	//				{
+	//					neighbor.setAttribute("distance", distance);
+	//					neighbor.setAttribute("parent", node);
+	//				}
+	//			}
+	//		}
+	//	}
+	//
+	//	// Affichage
+	//	
+	//}
 
 	/**
      * Permet de trouver et d'afficher les circuit absorbant du graphe s'il y en a

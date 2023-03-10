@@ -100,13 +100,14 @@ public class PanelPaint extends JPanel implements MouseListener, MouseMotionList
             /*----------------------*/
             g2.setFont(new Font("Arial", Font.BOLD, (int)(node.getWidth()*0.8)));
             g2.setColor(this.ctrl.getTheme().get("foreground"));
-            g2.drawString(""+node.getCout(voisin), x1+x2, y1+y2+y2/3);
+            g2.drawString(""+node.getCost(voisin), x1+x2, y1+y2+y2/3);
             
 
             /*----------------*/
             /* draw the arrow */
             /*----------------*/
             g2.setColor(this.ctrl.getTheme().get("background"));
+
             g2.drawOval(x1, y1, x2, y2);
         }
         else
@@ -124,7 +125,7 @@ public class PanelPaint extends JPanel implements MouseListener, MouseMotionList
 
             g2.setColor(this.ctrl.getTheme().get("foreground"));
             g2.setFont(new Font("Arial", 0, node.getWidth()));
-            g2.drawString(""+node.getCout(voisin), xSection, ySection);
+            g2.drawString(""+node.getCost(voisin), xSection, ySection);
 
 
             /*------------*/
@@ -135,7 +136,9 @@ public class PanelPaint extends JPanel implements MouseListener, MouseMotionList
 
             x2 = voisin.getX() + (int) (voisin.getWidth() /2);
             y2 = voisin.getY() + (int) (voisin.getHeight()/2);
-            
+
+            g2.setColor(this.ctrl.getTheme().get("background"));
+
             g2.drawLine(x1, y1, x2, y2);
 
             /*------------*/

@@ -20,6 +20,7 @@ public class Node
 
     private boolean absorbant;
 
+
     public Node(String name)
     {
         this(name, 100, 100);
@@ -144,7 +145,7 @@ public class Node
      * @param nodeDestination
      * @return Cout entre les deux nodes
      */
-    public int getCout(Node nodeDestination)
+    public int getCost(Node nodeDestination)
     {
         if (nodeDestination == null) throw new IllegalArgumentException("Le node de destination ne peut pas être null");
         if (!this.isNeighbor(nodeDestination)) throw new IllegalArgumentException("Le node n'est pas un voisin du node courant");
@@ -155,6 +156,12 @@ public class Node
             
         throw new IllegalArgumentException("Le node n'est pas un voisin du node courant");
     }
+
+    /**
+     * Permet de récupérer la liste des couts entre le noeud courant et tous ses voisins
+     * @return Liste des couts
+     */
+    public List<Integer> getCosts() { return this.listCout; }
 
     /**
      * Permet de récupérer la position x du node
@@ -211,6 +218,7 @@ public class Node
      */
     public void setAbsorbant(boolean absorbant) { this.absorbant = absorbant; }
 
+
     /**
      * Permet de mettre le noeud sous forme textuel (sérialiser) pour l'enregistrer dans un fichier texte
      * @return String noeud sous forme textuel (sérialisée)
@@ -219,7 +227,7 @@ public class Node
     {
         String sRet = this.getName() + "(" + this.getX() + "," + this.getY() + "," + this.getWidth() + "," + this.getHeight() + ")";
         for (Node voisin : this.getNeighbors())
-            sRet += "," + voisin.getName() + ":" + this.getCout(voisin);
+            sRet += "," + voisin.getName() + ":" + this.getCost(voisin);
 
         return sRet;
     }
