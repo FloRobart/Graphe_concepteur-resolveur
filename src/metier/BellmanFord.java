@@ -154,5 +154,4 @@ public class BellmanFord
         //bellmanFord.shortestPath(0);
         bellmanFord2.hasAbsorbingCycle(graph);
     }
-}}
 }
