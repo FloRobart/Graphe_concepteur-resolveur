@@ -3,6 +3,8 @@ package ihm;
 import java.awt.Color;
 
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+
 import java.awt.Toolkit;
 
 import controleur.Controleur;
@@ -12,6 +14,7 @@ public class PanelRendu extends JPanel
 {
     private Controleur ctrl;
     private PanelPaint panelPaint;
+
 
     public PanelRendu(Controleur ctrl)
     {

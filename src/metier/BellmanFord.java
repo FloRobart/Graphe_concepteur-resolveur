@@ -1,121 +1,158 @@
 package metier;
 
-import java.util.*;
 
-public class BellmanFord {
-    private List<Node> nodes;
-    private List<Integer> distances;
-    private List<Node> predecessors;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
-    public BellmanFord(List<Node> nodes) {
-        this.nodes = nodes;
-        this.distances = new ArrayList<>(Collections.nCopies(nodes.size(), Integer.MAX_VALUE));
-        this.predecessors = new ArrayList<>(Collections.nCopies(nodes.size(), null));
+
+public class BellmanFord
+{
+    private int V, E;
+    private int[][] edges;
+    private int[] distance;
+
+    public BellmanFord(int[][] edges, int V)
+    {
+        this.edges = edges;
+        this.V = V;
+        this.E = edges.length;
     }
 
-    public void execute(Node source)
+    /**
+     * Affiche le chemin le plus court entre source et dest
+     * @param source Noeud de départ
+     * @param dest Noeud d'arrivée
+     * @return Liste contenant le chemin le plus court entre source et dest ainsi que la distance
+     *        Si le chemin n'existe pas, retourne null
+     * lstRet.get(0) = distance
+     * lstRet.get(1) = source
+     * lstRet.get(lstRet.size() - 1) = dest
+     */
+    public List<Integer> shortestPath(int source, int dest)
     {
-        int sourceIndex = nodes.indexOf(source);
-        distances.set(sourceIndex, 0);
+        List<Integer> lstRet = null;
+        int[] distance = new int[V];
+        int[] parent = new int[V];
 
-        for (int i = 1; i < nodes.size(); i++)
+        // Initialisation des distances et des parents
+        Arrays.fill(distance, Integer.MAX_VALUE);
+        Arrays.fill(parent, -1);
+        distance[source] = 0;
+
+        // Algorithme de Bellman-Ford
+        for (int i = 0; i < V - 1; i++)
         {
-            for (Node node : nodes)
+            for (int j = 0; j < E; j++)
             {
-                int nodeIndex = nodes.indexOf(node);
-                List<Node> neighbors = node.getNeighbors();
-                List<Integer> neighborCosts = node.getCosts();
-
-                for (int j = 0; j < neighbors.size(); j++)
+                int u = edges[j][0];
+                int v = edges[j][1];
+                int weight = edges[j][2];
+                if (distance[u] != Integer.MAX_VALUE && distance[u] + weight < distance[v])
                 {
-                    Node neighbor = neighbors.get(j);
-                    int neighborIndex = nodes.indexOf(neighbor);
-                    int cost = neighborCosts.get(j);
-
-                    if (distances.get(nodeIndex) != Integer.MAX_VALUE && distances.get(neighborIndex) > distances.get(nodeIndex) + cost)
-                    {
-                        distances.set(neighborIndex, distances.get(nodeIndex) + cost);
-                        predecessors.set(neighborIndex, node);
-                    }
+                    distance[v] = distance[u] + weight;
+                    parent[v] = u;
                 }
             }
         }
 
-        for (Node node : nodes)
+        // Affichage des chemins les plus courts
+
+        if (distance[dest] != Integer.MAX_VALUE)
         {
-            int nodeIndex = nodes.indexOf(node);
-            List<Node> neighbors = node.getNeighbors();
-            List<Integer> neighborCosts = node.getCosts();
-
-            for (int i = 0; i < neighbors.size(); i++)
+            lstRet = new ArrayList<>();
+            int current = dest;
+            lstRet.add(current);
+            while (current != source)
             {
-                Node neighbor = neighbors.get(i);
-                int neighborIndex = nodes.indexOf(neighbor);
-                int cost = neighborCosts.get(i);
+                current = parent[current];
+                lstRet.add(current);
+            }
 
-                if (distances.get(nodeIndex) != Integer.MAX_VALUE && distances.get(neighborIndex) > distances.get(nodeIndex) + cost)
+            lstRet.add(distance[dest]);
+            Collections.reverse(lstRet);
+        }
+
+        return lstRet;
+    }
+
+    public boolean bellmanFordOptimized(int[][] edges)
+    {
+        boolean isOptimized = true;
+        for (int i = 0; i < V - 1 && isOptimized; i++)
+        {
+            isOptimized = false;
+            for (int j = 0; j < E; j++) {
+                int u = edges[j][0];
+                int v = edges[j][1];
+                int weight = edges[j][2];
+                if (distance[u] != Integer.MAX_VALUE && distance[u] + weight < distance[v])
                 {
-                    throw new RuntimeException("Negative cycle detected");
+                    distance[v] = distance[u] + weight;
+                    isOptimized = true;
                 }
             }
         }
+        return !isOptimized;
     }
 
-    public List<Integer> getDistances()
+    public boolean hasAbsorbingCycle(int[][] edges)
     {
-        for (Integer integer : distances)
+        distance = new int[V];
+        boolean isOptimized = true;
+        for (int i = 0; i < V - 1 && isOptimized; i++)
         {
-            System.out.println(integer + ", ");
-        }
-        return distances;
-    }
-
-    public List<Node> getPredecessors()
-    {
-        for (Node node : predecessors)
-        {
-            System.out.println(node.getName() + ", ");
-        }
-        return predecessors;
-    }
-
-    public void getDistance(Node destination)
-    {
-        int destinationIndex = nodes.indexOf(destination);
-        System.out.println("Shortest path to node " + destination.getName() + " is " + distances.get(destinationIndex) + ":");
-        
-
-        for (int i = 0; i < nodes.size(); i++)
-        {
-            System.out.println("i = " + i);
-            System.out.println("size = " + nodes.size());
-
-
-            Node currentNode = nodes.get(i);
-            List<Node> path = new ArrayList<>();
-            path.add(currentNode);
-
-            int cpt = i;
-            while (predecessors.get(cpt) != null)
+            isOptimized = false;
+            for (int j = 0; j < E; j++)
             {
-                currentNode = predecessors.get(cpt);
-                cpt = nodes.indexOf(currentNode);
-                path.add(currentNode);
-            }
-
-            Collections.reverse(path);
-
-            if (distances.get(cpt) == Integer.MAX_VALUE)
-                System.out.println("No path to node " + nodes.get(destinationIndex).getName());
-            else
-            {
-                System.out.print("Path to node " + nodes.get(destinationIndex).getName() + " via ");
-                for (Node node : path)
-                    System.out.print(node.getName() + " ");
-
-                System.out.println("has a cost of " + distances.get(destinationIndex));
+                int u = edges[j][0];
+                int v = edges[j][1];
+                int weight = edges[j][2];
+                if (distance[u] != Integer.MAX_VALUE && distance[u] + weight < distance[v])
+                {
+                    distance[v] = distance[u] + weight;
+                    isOptimized = true;
+                }
             }
         }
+
+        for (int j = 0; j < E; j++)
+        {
+            int u = edges[j][0];
+            int v = edges[j][1];
+            int weight = edges[j][2];
+            if (distance[u] != Integer.MAX_VALUE && distance[u] + weight < distance[v])
+            {
+                return true; // un circuit absorbant a été trouvé
+            }
+        }
+        return false; // pas de circuit absorbant
     }
+
+    public static void main(String[] args)
+    {
+        // Définition du graphe
+        int[][] graph = {
+            {0, 1, 4},
+            {0, 2, 3},
+            {1, 2, -2},
+            {1, 3, 5},
+            {2, 3, 4},
+            {2, 4, 1},
+            {3, 4, 2},
+            {3, 5, 6},
+            {4, 5, 3},
+            {3, 3, -1}
+        };
+        int nbNoeud = 6;
+
+        // Création de l'objet BellmanFord
+        BellmanFord bellmanFord2 = new BellmanFord(graph, nbNoeud);
+
+        // Recherche des chemins les plus courts à partir du sommet 0
+        //bellmanFord.shortestPath(0);
+        bellmanFord2.hasAbsorbingCycle(graph);
+    }
+}}
 }
-

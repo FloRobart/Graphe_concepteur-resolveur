@@ -160,7 +160,7 @@ public class PanelCreation extends JPanel implements ActionListener
         }
         else if(ae.getSource() == this.btnAddEdge)
         {
-            if (this.cbNodeA.getSelectedItem() != null && this.cbNodeB.getSelectedItem() != null && !(((Node)this.cbNodeA.getSelectedItem()).isNeighbor((Node)this.cbNodeB.getSelectedItem())))
+            if (this.cbNodeA.getSelectedItem() != null && this.cbNodeB.getSelectedItem() != null && !(((Node)this.cbNodeA.getSelectedItem()).isNeighbor((Node)this.cbNodeB.getSelectedItem())) &&  (((Node)this.cbNodeA.getSelectedItem()) != ((Node)this.cbNodeB.getSelectedItem())))
             {
                 String cout = "";
                 do
@@ -168,7 +168,7 @@ public class PanelCreation extends JPanel implements ActionListener
                     cout = JOptionPane.showInputDialog(this.ctrl.getFramePrincipale(), "cout de l'arête : ", "Ajout d'une arête", JOptionPane.QUESTION_MESSAGE);
                     if (cout == null)
                         break;
-                }while(!cout.matches("[0-9]+"));
+                }while(!cout.matches("^-?[0-9]+$"));
 
                 if (cout != null)
                 {

@@ -5,6 +5,7 @@ import ihm.menu.MenuBarre;
 import metier.Node;
 
 import javax.swing.JFrame;
+import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 
 
@@ -14,6 +15,7 @@ public class FramePrincipale extends JFrame
     private MenuBarre menuBarre;
     private PanelCreation panelCreation;
     private PanelRendu panelRendu;
+    private JScrollPane scrollPane;
 
 
     public FramePrincipale(Controleur ctrl)
@@ -27,9 +29,10 @@ public class FramePrincipale extends JFrame
         this.menuBarre = new MenuBarre(this.ctrl);
         this.panelCreation = new PanelCreation(this.ctrl);
         this.panelRendu = new PanelRendu(this.ctrl);
+        this.scrollPane = new JScrollPane(this.panelRendu);
 
         /* Ajout des composants */
-        JSplitPane jsp = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, this.panelCreation, this.panelRendu);
+        JSplitPane jsp = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, this.panelCreation, this.scrollPane);
         jsp.setOneTouchExpandable(true);
 		jsp.setContinuousLayout(true);
         this.add(jsp);
@@ -71,5 +74,8 @@ public class FramePrincipale extends JFrame
         this.menuBarre.appliquerTheme();
         this.panelCreation.appliquerTheme();
         this.panelRendu.appliquerTheme();
+
+        this.scrollPane.getHorizontalScrollBar().setBackground(this.ctrl.getTheme().get("background"));
+        this.scrollPane.getVerticalScrollBar  ().setBackground(this.ctrl.getTheme().get("background"));
     }
 }

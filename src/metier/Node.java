@@ -141,6 +141,61 @@ public class Node
     public String getName() { return this.name; }
 
     /**
+     * Permet de convertir le nom du node en int
+     * @return Nom du node converti en int
+     */
+    public int getNameInInt()
+    {
+        int result = 0;
+        for (int i = 0; i < name.length(); i++)
+            result = result * 26 + (int)(name.charAt(i) - 'A' + 1); // Ajouter la valeur numérique à la somme
+
+        return result - 1; // Soustraire 1 car les noms auto-incrémentés commencent à 1, pas à 0
+    }
+
+    /**
+     * Permet de récupéré un noeud avec son numéro (qui est en fait son nom convertie en int avec la méthode getNameInInt())
+     * @param name : numéro du noeud
+     * @return Noeud
+     */
+    public Node getNodeWithIntName(int name)
+    {
+        Node nodeRet = null;
+
+
+
+
+        return nodeRet;
+    }
+
+    /**
+     * Permet d'avoir le nom d'un noeud à partir de son numéro
+     * @param num : numéro du noeud
+     * @return Nom du noeud
+     */
+    public static String convertIntToName(int num)
+    {
+        StringBuilder sb = new StringBuilder();
+        num++; // Ajouter 1 car les noms auto-incrémentés commencent à 1, pas à 0
+        while (num > 0)
+        {
+            int rem = num % 26;
+            if (rem == 0)
+            { // si le reste est 0, alors la lettre doit être 'Z'
+                sb.append('Z');
+                num = (num / 26) - 1;
+            }
+            else
+            { // sinon, ajouter la lettre correspondante
+                sb.append((char) (rem - 1 + 'A'));
+                num /= 26;
+            }
+        }
+
+        return sb.reverse().toString(); // retourner le nom inversé
+    }
+
+    /**
      * Permet de récupérer le cout entre deux nodes
      * @param nodeDestination
      * @return Cout entre les deux nodes

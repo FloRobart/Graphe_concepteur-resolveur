@@ -8,6 +8,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
@@ -138,7 +139,7 @@ public class Metier
 			{
 				for (int i = name.length()-1; i >= 0; i--)
 				{
-					if (name.charAt(i) == 'E')
+					if (name.charAt(i) == 'Z')
 					{
 						if (i == 0)
 							name = name + "A";
@@ -168,7 +169,7 @@ public class Metier
 	{
 		if (nodeOrig == null) throw new NullPointerException("Node d'origine null");
 		if (nodeDest == null) throw new NullPointerException("Node de destination null");
-		if (cout < 0) throw new IllegalArgumentException("Cout négatif");
+		//if (cout < 0) throw new IllegalArgumentException("Cout négatif");
 
 		nodeOrig.addNeighbor(nodeDest, cout);
 	}
@@ -180,9 +181,60 @@ public class Metier
      */
     public void findShortPath(Node nA, Node nB)
 	{
-		BellmanFord bf = new BellmanFord(this.lstNode);
-		bf.execute(nA);
-		bf.getDistance(nB);
+		//BellmanFord bf = new BellmanFord(this.lstNode);
+		//bf.execute(nA);
+		//bf.getDistance(nB);
+
+
+		BellmanFord bf2 = new BellmanFord(this.lstNodesToMatrice(this.lstNode), this.lstNode.size());
+		List<Integer> lstShortestPath = bf2.shortestPath(nA.getNameInInt(), nB.getNameInInt());
+
+		System.out.print("lst = ");
+        for (Integer i : lstShortestPath) {
+            System.out.print(i + " ");
+        }
+        System.out.println("\n");
+
+		//if (lstShortestPath == null || lstShortestPath.size() == 0)
+		//{
+		//	//System.out.println("Pas de chemin possible");
+		//	return;
+		//}
+		//Collections.reverse(lstShortestPath);
+		//for (int i = 0; i < lstShortestPath.size(); i++) {
+		//	System.out.println(Node.convertIntToName(lstShortestPath.get(i)) + " --> ");
+		//}
+	}
+
+	/**
+	 * Permet de convertir une liste de noeuds en matrice d'adjacence
+	 * @param nodes : Liste de noeuds
+	 * @return Matrice d'adjacence
+	 */
+	private int[][] lstNodesToMatrice(List<Node> nodes)
+	{
+		int nbLigne = 0;
+		for (Node node : nodes) nbLigne += node.getNeighbors().size();
+
+		int[][] edges = new int[nbLigne][3]; // Initialiser le tableau de résultats avec une taille suffisante
+
+		int row = 0;
+		for (Node node : nodes)
+		{
+			int source = node.getNameInInt();
+			for (int i = 0; i < node.getNeighbors().size(); i++)
+			{
+				Node neighbor = node.getNeighbors().get(i);
+				int destination = neighbor.getNameInInt();
+				int cost = node.getCosts().get(i);
+				edges[row][0] = source;
+				edges[row][1] = destination;
+				edges[row][2] = cost;
+				row++;
+			}
+		}
+
+		return edges;
 	}
 
 
@@ -228,7 +280,24 @@ public class Metier
      */
     public void findAbsorbingCircuit(Node nA, Node nB)
 	{
-		
+		System.out.println("nom en int = " + nA.getNameInInt());
+
+		for (int i = 0; i < this.lstNode.size(); i++) {
+			if (lstNode.get(i).getName() == nA.getName()) System.out.println("nombre de noeud = " + i);
+		}
+
+		//for (int i = 0; i < lstNode.size(); i++)
+		//{
+		//	if (lstNode.get(i).getNeighbors().size() == 0)
+		//		lstNode.get(i).setAbsorbant(true);
+		//	else if (lstNode.get(i).getNeighbors().size() == 1)
+		//		if (lstNode.get(i).getNeighbors().get(0) == lstNode.get(i))
+		//			lstNode.get(i).setAbsorbant(true);
+		//		else
+		//			lstNode.get(i).setAbsorbant(false);
+		//	else
+		//		lstNode.get(i).setAbsorbant(false);
+		//}
 	}
 
     /**
