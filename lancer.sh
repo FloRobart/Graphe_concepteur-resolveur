@@ -91,11 +91,3 @@ else
         echo "Erreur de compilation"
     fi
 fi
-
-call java -cp "%CLASSPATH%;.\bin;.\bin\donnees\jar_libraries\jdom-2.0.6.jar;." controleur.Controleur 2> nul && ( echo Fin de l'execution. ) || ( echo Compilation... & call :genererCompileList ".\src" & call javac -cp "%CLASSPATH%;.\bin\donnees\jar_libraries\jdom-2.0.6.jar;." -encoding utf8 -d ".\bin" "@compile.list" && ( echo Lancement de l'application... & call java -cp "%CLASSPATH%;.\bin;.\bin\donnees\jar_libraries\jdom-2.0.6.jar;." controleur.Controleur ) && ( echo Fin de l'execution. ) || ( echo. & echo Erreur d'EXECUTION. ) ) || ( echo. & echo Erreur de COMPILATION. )
-
-# Compilation
-javac -cp "$CLASSPATH:./bin/donnees/jar_libraries/jdom-2.0.6.jar:./bin/donnees/:." -encoding utf8 -d "./bin" @compile.list
-
-# lancement
-java -cp "$CLASSPATH:./bin:./bin/donnees/jar_libraries/jdom-2.0.6.jar:./bin/donnees/:." controleur.Controleur
