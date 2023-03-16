@@ -69,7 +69,13 @@ else
     verificationDossier "./src"
 fi
 
-cp -fr "./donnees/" "./bin/"
+# s'il n'existe pas le dossier bin, on le crée
+if [ ! -d "./bin" ]
+then
+    mkdir "./bin"
+fi
+
+cp -fr "./donnees/" "./bin/donnees/"
 
 echo "Compilation..."
 javac -cp "$CLASSPATH:./bin/donnees/jar_libraries/jdom-2.0.6.jar:./bin/donnees/:." -encoding utf8 -d "./bin" @compile.list

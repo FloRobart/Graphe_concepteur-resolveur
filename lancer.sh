@@ -60,9 +60,13 @@ verificationDossier()
 extensionValide="java"               
 nomFichierSortie="./compile.list"
 
+if [ ! -d "./bin" ]
+then
+    mkdir "./bin"
+fi
 
 echo "Lancement de l'application..."
-java -cp "$CLASSPATH:./bin:./bin/donnees/jar_libraries/jdom-2.0.6.jar:./bin/donnees/:." controleur.Controleur
+java -cp "$CLASSPATH:./bin:./bin/donnees/jar_libraries/jdom-2.0.6.jar:./bin/donnees/:." controleur.Controleur 2> /dev/null
 
 if [ $? -eq 0 ]
 then 
@@ -72,6 +76,12 @@ then
 else
     echo "Compilation..."
     verificationDossier "./src"
+    if [ ! -d "./bin" ]
+    then
+        mkdir "./bin"
+        cp -fr "./donnees/" "./bin/donnees/"
+    fi
+
     javac -cp "$CLASSPATH:./bin/donnees/jar_libraries/jdom-2.0.6.jar:./bin/donnees/:." -encoding utf8 -d "./bin" @compile.list
 
     if [ $? -eq 0 ]
