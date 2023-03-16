@@ -1,0 +1,13 @@
+Compiler et lancer l'application
+====================
+
+
+
+Lancer l'application
+====================
+sous windows, lancer le fichier "run.bat" 
+
+
+
+Fonctionnalité
+==============
