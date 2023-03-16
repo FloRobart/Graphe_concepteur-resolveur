@@ -8,8 +8,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
@@ -27,6 +25,8 @@ public class Metier
     private HashMap<String, Color> hmColorTheme;
 
 	private List<Node> lstNode;
+
+	private OptionFrame optionFrame;
 
 
     public Metier(Controleur ctrl)
@@ -173,7 +173,6 @@ public class Metier
 	{
 		if (nodeOrig == null) throw new NullPointerException("Node d'origine null");
 		if (nodeDest == null) throw new NullPointerException("Node de destination null");
-		//if (cout < 0) throw new IllegalArgumentException("Cout négatif");
 
 		nodeOrig.addNeighbor(nodeDest, cout);
 	}
@@ -195,18 +194,19 @@ public class Metier
 		for (Node n : this.lstNode)
 			n.setShortNeighborNode(null);
 
-		if (lstShortestPath.get(0) < 0)
-		{
-			new OptionFrame(this.ctrl.getFramePrincipale(), "Le graphe possède un circuit absorbant", this.ctrl).show();
-			this.ctrl.majIhm();
-			return;
-		}
-
 		for (int i = 1; i < lstShortestPath.size()-1; i++)
 		{
 			Node shortNeighborNode = this.getNodeByName(Node.convertIntToName(lstShortestPath.get(i))); /* Récupération du noeud qui à ce nom */
 			shortNeighborNode.setShortNeighborNode(this.getNodeByName(Node.convertIntToName(lstShortestPath.get(i+1)))); /* Définition du noeud suivant dans la liste comme 'shortNeighborNode' */
 		}
+
+
+		String message = "Le chemin le plus court entre " + nA.getName() + " et " + nB.getName() + " à un cout de " + lstShortestPath.get(0) + ".";
+		if (bf2.hasAbsorbingCycle())
+			message += "\n\n Attention, le graphe contient un cycle absorbant, le résultat peut donc être erroné (surtout s'il est négatif ou s'il passe par le circuit absorbant).";
+
+		if (this.optionFrame != null) this.optionFrame.dispose();
+		this.optionFrame = new OptionFrame(this.ctrl.getFramePrincipale(), message, this.ctrl);
 
 		this.ctrl.majIhm();
 	}
@@ -245,13 +245,14 @@ public class Metier
 	/**
      * Permet de trouver et d'afficher les circuit absorbant du graphe s'il y en a
      */
-    public void findAbsorbingCircuit(Node nA, Node nB)
+    public void findAbsorbingCircuit()
 	{
-		String sRet = "";
-
 		BellmanFord bf = new BellmanFord(this.lstNodesToMatrice(this.lstNode), this.lstNode.size());
-		System.out.println(""+bf.hasAbsorbingCycle());
-		//new OptionFrame(this.ctrl.getFramePrincipale(), ""+bf.hasAbsorbingCycle(), this.ctrl).show();
+		boolean absorbant = bf.hasAbsorbingCycle();
+		
+		String message = absorbant ? "Le graphe possède un circuit absorbant" : "Le graphe ne possède pas de circuit absorbant";
+		if (this.optionFrame != null) optionFrame.dispose();
+		this.optionFrame = new OptionFrame(this.ctrl.getFramePrincipale(), message, this.ctrl);
 	}
 
 
@@ -264,15 +265,11 @@ public class Metier
 		{
 			if (node.getNeighbors().size() == 0)
 				node.setObselet(true);
-			else if (node.getNeighbors().size() == 1)
-				if (node.getNeighbors().get(0) == node)
-					node.setObselet(true);
-				else
-					node.setObselet(false);
 			else
 				node.setObselet(false);
 		}
 
+		this.optionFrame = new OptionFrame(this.ctrl.getFramePrincipale(), "Les noeuds qui s'affiche en rouge sur le graphe sont des puits, c'est à dire qu'on ne peux pas en sortir", this.ctrl);
 		this.ctrl.majIhm();
 	}
 
@@ -394,5 +391,12 @@ public class Metier
 			e.printStackTrace();
 			System.out.println("Erreur lors de la lecture du fichier XML des informations du theme");
 		}
+	}
+
+
+	public void appliquerTheme()
+	{
+		if (this.optionFrame != null)
+			this.optionFrame.appliquerTheme();
 	}
 }

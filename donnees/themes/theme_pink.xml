@@ -3,7 +3,7 @@
     <foreground         red="253" green="235" blue="255" alpha="255"></foreground>
     <disableColor       red="200" green="0"   blue="0"   alpha="255"></disableColor>
     <enableColor        red="0"   green="200" blue="0"   alpha="255"></enableColor>
-    <titlesBackground   red="247" green="158" blue="255"  alpha="255"></titlesBackground>247, 158, 255
+    <titlesBackground   red="247" green="158" blue="255"  alpha="255"></titlesBackground>
     <saisiesBackground  red="255"  green="49"  blue="63"  alpha="255"></saisiesBackground>
     <saisiesPlaceholder red="255" green="255" blue="255" alpha="100"></saisiesPlaceholder>
     <buttonsBackground  red="244" green="125"  blue="255"  alpha="255"></buttonsBackground>

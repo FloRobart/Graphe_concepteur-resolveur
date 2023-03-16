@@ -12,33 +12,36 @@ public class OptionFrame extends JFrame
 {
     private Controleur ctrl;
     private JPanel panelOption;
-    private JFrame parent;
+    private JLabel labelMessage;
+    private String message;
 
     public OptionFrame(JFrame parent, String message, Controleur ctrl)
     {
         this.ctrl = ctrl;
+        this.message = message;
         this.setTitle("Résultat");
-        this.setSize(400, 300);
+        this.setLocationRelativeTo(parent);
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         /* Création des composants */
         this.panelOption = new JPanel();
-        this.panelOption.add(new JLabel(message));
-
+        this.labelMessage = new JLabel(message);
+        
         /* Ajout des composants */
+        this.panelOption.add(this.labelMessage);
         this.add(this.panelOption);
 
         /* Affichage */
         this.appliquerTheme();
-        this.setVisible(false);
-    }
-
-    public void show()
-    {
-        //this.setLocation(this.parent.getWidth()/2, this.parent.getHeight()/2);
-        this.setLocationRelativeTo(this.parent);
+        this.pack();
         this.setVisible(true);
     }
+
+    /**
+     * Permet de récupérer le message
+     * @return message
+     */
+    public String getMessage() { return this.message; }
 
     /**
      * Applique le thème à tous les composants du panel
@@ -50,5 +53,8 @@ public class OptionFrame extends JFrame
 
         this.panelOption.setBackground(backGeneralColor);
         this.panelOption.setForeground(foreGeneralColor);
+
+        this.labelMessage.setBackground(backGeneralColor);
+        this.labelMessage.setForeground(foreGeneralColor);
     }
 }

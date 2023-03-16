@@ -19,6 +19,8 @@ public class PanelCreation extends JPanel implements ActionListener
 {
     private Controleur ctrl;
                  
+    private OptionFrame     optionFrame;
+
     private JButton         btnAddNode;
     private JComboBox<Node> cbNodeA;
     private JComboBox<Node> cbNodeB;
@@ -34,6 +36,8 @@ public class PanelCreation extends JPanel implements ActionListener
 
 
         /* Création des composants */
+        this.optionFrame             = null;
+
         this.btnAddNode              = new JButton("Ajouter un noeud");
         this.cbNodeA                 = new JComboBox<Node>();
         this.cbNodeB                 = new JComboBox<Node>();
@@ -176,16 +180,26 @@ public class PanelCreation extends JPanel implements ActionListener
                     this.ctrl.majIhm();
                 }
             }
+            else
+            {
+                if (this.optionFrame != null) this.optionFrame.dispose();
+                this.optionFrame = new OptionFrame(this.ctrl.getFramePrincipale(), "Vous devez séléctionner un noeud différent dans chacun des deux listes déroulantes", this.ctrl);
+            }
         }
         else if(ae.getSource() == this.btnFindShortPath)
         {
             if (this.cbNodeA.getSelectedItem() != null && this.cbNodeB.getSelectedItem() != null && this.cbNodeA.getSelectedItem() != this.cbNodeB.getSelectedItem())
                 this.ctrl.findShortPath((Node)(this.cbNodeA.getSelectedItem()), (Node)(this.cbNodeB.getSelectedItem()));
+            else
+            {
+                if (this.optionFrame != null) this.optionFrame.dispose();
+                this.optionFrame = new OptionFrame(this.ctrl.getFramePrincipale(), "Vous devez séléctionner un noeud différent dans chacun des deux listes déroulantes", this.ctrl);
+            }
+
         }
         else if(ae.getSource() == this.btnFindAbsorbingCircuit)
         {
-            if (this.cbNodeA.getSelectedItem() != null && this.cbNodeB.getSelectedItem() != null && this.cbNodeA.getSelectedItem() != this.cbNodeB.getSelectedItem())
-                this.ctrl.findAbsorbingCircuit((Node)(this.cbNodeA.getSelectedItem()), (Node)(this.cbNodeB.getSelectedItem()));
+            this.ctrl.findAbsorbingCircuit();
         }
         else if (ae.getSource() == this.btnFindObseletNode)
         {
@@ -227,5 +241,8 @@ public class PanelCreation extends JPanel implements ActionListener
 
         this.btnFindObseletNode.setBackground(buttonsBackground);
         this.btnFindObseletNode.setForeground(foreGeneralColor);
+
+        if (this.optionFrame != null)
+            this.optionFrame.appliquerTheme();
     }
 }
