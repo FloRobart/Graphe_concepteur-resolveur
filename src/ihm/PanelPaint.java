@@ -145,7 +145,7 @@ public class PanelPaint extends JPanel implements MouseListener, MouseMotionList
      */
     private void drawNode(Graphics2D g2, Node node)
     {
-        if (node.isAbsorbant())
+        if (node.isObselet())
             g2.setColor(this.ctrl.getTheme().get("disableColor"));
         else
             g2.setColor(this.ctrl.getTheme().get("foreground"));

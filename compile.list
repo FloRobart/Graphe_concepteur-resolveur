@@ -9,6 +9,7 @@
 .\src\ihm\PanelCreation.java  
 .\src\ihm\PanelRendu.java  
 .\src\ihm\PanelPaint.java  
+.\src\ihm\OptionFrame.java  
  
 .\src\ihm\menu\MenuBarre.java  
 .\src\ihm\menu\PopUpMenu.java  

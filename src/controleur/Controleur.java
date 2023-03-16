@@ -78,12 +78,12 @@ public class Controleur
     /**
      * Permet de trouver et d'afficher les circuit absorbant du graphe s'il y en a
      */
-    public void findAbsorbingCircuit() { this.metier.findAbsorbingCircuit(); }
+    public void findAbsorbingCircuit(Node nA, Node nB) { this.metier.findAbsorbingCircuit(nA, nB); }
 
     /**
      * Permet de trouver et d'afficher les noeuds absorbant du graphe s'il y en a
      */
-    public void findAbsorbingNode() { this.metier.findAbsorbingNode(); }
+    public void findObseletNode() { this.metier.findObseletNode(); }
 
     /**
      * Permet d'ajouter un noeud dans la JList de l'ihm

@@ -17,6 +17,7 @@ import java.util.Scanner;
 import javax.swing.JOptionPane;
 
 import controleur.Controleur;
+import ihm.OptionFrame;
 
 
 public class Metier
@@ -186,8 +187,7 @@ public class Metier
 	{
 		BellmanFord bf2 = new BellmanFord(this.lstNodesToMatrice(this.lstNode), this.lstNode.size());
 		List<Integer> lstShortestPath = bf2.shortestPath(nA.getNameInInt(), nB.getNameInInt());
-
-
+		
 		if (lstShortestPath == null || lstShortestPath.size() == 0) { JOptionPane.showMessageDialog(this.ctrl.getFramePrincipale(), "Aucun chemin ne vas de " + nA.getName() + " à " + nB.getName() + ".", "Résultat du chemin le plus court", JOptionPane.INFORMATION_MESSAGE); return; }
 
 
@@ -195,26 +195,18 @@ public class Metier
 		for (Node n : this.lstNode)
 			n.setShortNeighborNode(null);
 
+		if (lstShortestPath.get(0) < 0)
+		{
+			new OptionFrame(this.ctrl.getFramePrincipale(), "Le graphe possède un circuit absorbant", this.ctrl).show();
+			this.ctrl.majIhm();
+			return;
+		}
+
 		for (int i = 1; i < lstShortestPath.size()-1; i++)
 		{
-			/* Récupération du noeud qui à ce nom */
-			Node shortNeighborNode = this.getNodeByName(Node.convertIntToName(lstShortestPath.get(i)));
-
-			/* Définition du noeud suivant dans la liste comme 'shortNeighborNode' */
-			shortNeighborNode.setShortNeighborNode(this.getNodeByName(Node.convertIntToName(lstShortestPath.get(i+1))));
+			Node shortNeighborNode = this.getNodeByName(Node.convertIntToName(lstShortestPath.get(i))); /* Récupération du noeud qui à ce nom */
+			shortNeighborNode.setShortNeighborNode(this.getNodeByName(Node.convertIntToName(lstShortestPath.get(i+1)))); /* Définition du noeud suivant dans la liste comme 'shortNeighborNode' */
 		}
-		System.out.println("cout = " + lstShortestPath.get(0) + "\n");
-
-
-		System.out.print("chemin en partant de nA : " + nA.getName() + " --> ");
-		Node shortNeighborNode = nA.getShortNeighborNode();
-		while (shortNeighborNode != null)
-		{
-			System.out.print(shortNeighborNode.getName() + " --> ");
-
-			shortNeighborNode = shortNeighborNode.getShortNeighborNode();
-		}
-		System.out.println("cout = " + lstShortestPath.get(0) + "\n");
 
 		this.ctrl.majIhm();
 	}
@@ -253,47 +245,32 @@ public class Metier
 	/**
      * Permet de trouver et d'afficher les circuit absorbant du graphe s'il y en a
      */
-    public void findAbsorbingCircuit()
+    public void findAbsorbingCircuit(Node nA, Node nB)
 	{
 		String sRet = "";
-		for (Node node : this.lstNode)
-		{
-			for (Node node2 : this.lstNode)
-			{
-				List<Integer> lstShortestPath = new BellmanFord(this.lstNodesToMatrice(this.lstNode), this.lstNode.size()).shortestPath(node.getNameInInt(), node2.getNameInInt());
-				if (lstShortestPath != null && lstShortestPath.size() > 0)
-				{
-					if (lstShortestPath.get(0) < 0)
-					{
-						sRet += "Circuit absorbant trouvé : " + node.getName() + " --> " + node2.getName() + "\n";
-					}
-				}
-			}
-		}
 
-		if (sRet.equals(""))
-			JOptionPane.showMessageDialog(this.ctrl.getFramePrincipale(), "Aucun circuit absorbant n'a été trouvé.", "Résultat du circuit absorbant", JOptionPane.INFORMATION_MESSAGE);
-		else
-			JOptionPane.showMessageDialog(this.ctrl.getFramePrincipale(), "Circuit absorbant trouvé : " + sRet, "Résultat du circuit absorbant", JOptionPane.INFORMATION_MESSAGE);
+		BellmanFord bf = new BellmanFord(this.lstNodesToMatrice(this.lstNode), this.lstNode.size());
+		System.out.println(""+bf.hasAbsorbingCycle());
+		//new OptionFrame(this.ctrl.getFramePrincipale(), ""+bf.hasAbsorbingCycle(), this.ctrl).show();
 	}
 
 
     /**
      * Permet de trouver et d'afficher les noeuds absorbant du graphe s'il y en a
      */
-    public void findAbsorbingNode()
+    public void findObseletNode()
 	{
 		for (Node node : this.lstNode)
 		{
 			if (node.getNeighbors().size() == 0)
-				node.setAbsorbant(true);
+				node.setObselet(true);
 			else if (node.getNeighbors().size() == 1)
 				if (node.getNeighbors().get(0) == node)
-					node.setAbsorbant(true);
+					node.setObselet(true);
 				else
-					node.setAbsorbant(false);
+					node.setObselet(false);
 			else
-				node.setAbsorbant(false);
+				node.setObselet(false);
 		}
 
 		this.ctrl.majIhm();

@@ -81,7 +81,7 @@ public class BellmanFord
      * @param matrice Matrice d'adjascence du graphe
      * @return ???
      */
-    public boolean bellmanFordOptimized(int[][] matrice)
+    public boolean bellmanFordOptimized()
     {
         boolean isOptimized = true;
         for (int i = 0; i < V - 1 && isOptimized; i++)
@@ -106,7 +106,7 @@ public class BellmanFord
      * @param matrice Matrice d'adjascence du graphe
      * @return true si le graphe contient un cycle absorbant, false sinon
      */
-    public boolean hasAbsorbingCycle(int[][] matrice)
+    public boolean hasAbsorbingCycle()
     {
         distance = new int[V];
         boolean isOptimized = true;

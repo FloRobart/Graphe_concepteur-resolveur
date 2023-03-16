@@ -18,7 +18,7 @@ public class Node
     private int width;
     private int height;
 
-    private boolean absorbant;
+    private boolean obselet;
     private Node shortNeighborNode;
 
 
@@ -38,7 +38,7 @@ public class Node
         this.width  = Node.DEFAULT_WIDTH;
         this.height = Node.DEFAULT_HEIGHT;
 
-        this.absorbant = false;
+        this.obselet = false;
         this.shortNeighborNode = null;
     }
 
@@ -52,7 +52,7 @@ public class Node
         this.width = width;
         this.height = height;
 
-        this.absorbant = false;
+        this.obselet = false;
         this.shortNeighborNode = null;
     }
 
@@ -66,7 +66,7 @@ public class Node
         this.width = width;
         this.height = height;
 
-        this.absorbant = false;
+        this.obselet = false;
         this.shortNeighborNode = null;
     }
 
@@ -271,16 +271,16 @@ public class Node
     public void setPosition(int x, int y) { this.x = x; this.y = y; }
 
     /**
-     * Permet de savoir si le node est absorbant
-     * @return True si le node est absorbant, false sinon
+     * Permet de savoir si le node est obselet
+     * @return True si le node est obselet, false sinon
      */
-    public boolean isAbsorbant() { return this.absorbant; }
+    public boolean isObselet() { return this.obselet; }
 
     /**
-     * Permet de définir si le node est absorbant
-     * @param absorbant : True si le node est absorbant, false sinon
+     * Permet de définir si le node est obselet
+     * @param obselet : True si le node est obselet, false sinon
      */
-    public void setAbsorbant(boolean absorbant) { this.absorbant = absorbant; }
+    public void setObselet(boolean obselet) { this.obselet = obselet; }
 
     /**
      * Permet de modifier le noeud par le quel il faut passer pour aller le plus vite au noeud de destination (qui n'est pas connu par le node courant)
