@@ -4,6 +4,7 @@ package ihm.menu;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.Color;
+import java.awt.Desktop;
 
 import javax.swing.JFileChooser;
 import javax.swing.JMenu;
@@ -36,6 +37,8 @@ public class MenuBarre extends JMenuBar implements ActionListener
 	private JMenuItem menuiPreferencesThemesSombre;
 	private JMenuItem menuiPreferencesThemesDark;
 	private JMenuItem menuiPreferencesThemesPink;
+
+	private JMenuItem menuiAideAPropos;
 
 
 	public MenuBarre(Controleur ctrl) 
@@ -82,6 +85,7 @@ public class MenuBarre extends JMenuBar implements ActionListener
 		/*------*/
 		this.menuAide = new JMenu("Aide");
 		this.menuAide.setMnemonic('A');
+		this.menuiAideAPropos = new JMenuItem("Aide");
 
 
 		/*=======================*/
@@ -114,6 +118,7 @@ public class MenuBarre extends JMenuBar implements ActionListener
 		/*------*/
 		/* Aide */
 		/*------*/
+		this.menuAide.add(this.menuiAideAPropos);
 		this.add(menuAide);
 
 
@@ -132,6 +137,9 @@ public class MenuBarre extends JMenuBar implements ActionListener
 		this.menuiPreferencesThemesSombre.addActionListener(this);
 		this.menuiPreferencesThemesDark  .addActionListener(this);
 		this.menuiPreferencesThemesPink  .addActionListener(this);
+
+		/* Aide */
+		this.menuiAideAPropos.addActionListener(this);
 	}
 
 
@@ -173,6 +181,13 @@ public class MenuBarre extends JMenuBar implements ActionListener
 
 			if (e.getSource() == this.menuiPreferencesThemesPink)
 				this.ctrl.changerTheme("pink");
+
+			/* Aide */
+			if (e.getSource() == this.menuiAideAPropos)
+			{
+				// ouvre le fichier d'aide
+				try { Desktop.getDesktop().open(new File("./A_LIRE.txt")); } catch(Exception ignored) {}
+			}
 		}
 	}
 
