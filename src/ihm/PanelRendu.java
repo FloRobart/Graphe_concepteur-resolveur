@@ -3,7 +3,6 @@ package ihm;
 import java.awt.Color;
 
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 
 import java.awt.Toolkit;
 
