@@ -19,6 +19,7 @@ public class Node
     private int height;
 
     private boolean absorbant;
+    private Node shortNeighborNode;
 
 
     public Node(String name)
@@ -38,6 +39,7 @@ public class Node
         this.height = Node.DEFAULT_HEIGHT;
 
         this.absorbant = false;
+        this.shortNeighborNode = null;
     }
 
     public Node(String name, List<Node> lstNeighbors, List<Integer> listCout, int x, int y, int width, int height)
@@ -51,6 +53,7 @@ public class Node
         this.height = height;
 
         this.absorbant = false;
+        this.shortNeighborNode = null;
     }
 
     public Node(String name, int x, int y, int width, int height)
@@ -64,6 +67,7 @@ public class Node
         this.height = height;
 
         this.absorbant = false;
+        this.shortNeighborNode = null;
     }
 
     /**
@@ -243,6 +247,11 @@ public class Node
     public int getHeight() { return this.height; }
 
     /**
+     * Permet de récupérer le noeud par le quel il faut passer pour aller le plus vite au noeud de destination (qui n'est pas connu par le node courant)
+     */
+    public Node getShortNeighborNode() { return this.shortNeighborNode; }
+
+    /**
      * Permet de modifier la position x du node
      * @param x : int nouvelle position x
      */
@@ -272,6 +281,12 @@ public class Node
      * @param absorbant : True si le node est absorbant, false sinon
      */
     public void setAbsorbant(boolean absorbant) { this.absorbant = absorbant; }
+
+    /**
+     * Permet de modifier le noeud par le quel il faut passer pour aller le plus vite au noeud de destination (qui n'est pas connu par le node courant)
+     * @param shortNeighborNode : Noeud par le quel il faut passer pour aller le plus vite au noeud de destination (qui n'est pas connu par le node courant)
+     */
+    public void setShortNeighborNode(Node shortNeighborNode) { this.shortNeighborNode = shortNeighborNode; }
 
 
     /**

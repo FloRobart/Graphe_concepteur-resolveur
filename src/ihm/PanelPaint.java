@@ -10,6 +10,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.geom.Rectangle2D;
+import java.awt.Cursor;
 
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
@@ -82,81 +83,56 @@ public class PanelPaint extends JPanel implements MouseListener, MouseMotionList
     {
         int x1, x2, y1, y2;
 
+        /*------------------------------*/
+        /* affichage du cout de l'arête */
+        /*------------------------------*/
+        int xOrig = (node  .getX());
+        int yOrig = (node  .getY());
+        int xDest = (voisin.getX());
+        int yDest = (voisin.getY());
+
+        int xSection = (xOrig + xDest) / 2;
+        int ySection = (yOrig + yDest) / 2;
+
+        g2.setColor(this.ctrl.getTheme().get("foreground"));
+        g2.setFont(new Font("Arial", 0, node.getWidth()));
+        g2.drawString(""+node.getCost(voisin), xSection, ySection);
+
+
+        /* Couleur en fonction du chemin le plus cours */
         g2.setStroke(new BasicStroke(2));
-
-        if (node == voisin)
-        {
-            /*------------------------*/
-            /* calcule arrow position */
-            /*------------------------*/
-            x1 = (node.getX() - (int)(node.getWidth ()/1.5)) + (int)(((int)(node.getWidth ()*1.5))/1.5);
-            y1 = (node.getY() - (int)(node.getHeight()/1.5)) + (int)(((int)(node.getHeight()*1.5))/1.5);
-            x2 = (int)(node.getWidth ()*1.5);
-            y2 = (int)(node.getHeight()*1.5);
-
-
-            /*----------------------*/
-            /* draw the arrow count */
-            /*----------------------*/
-            g2.setFont(new Font("Arial", Font.BOLD, (int)(node.getWidth()*0.8)));
-            g2.setColor(this.ctrl.getTheme().get("foreground"));
-            g2.drawString(""+node.getCost(voisin), x1+x2, y1+y2+y2/3);
-            
-
-            /*----------------*/
-            /* draw the arrow */
-            /*----------------*/
-            g2.setColor(this.ctrl.getTheme().get("background"));
-
-            g2.drawOval(x1, y1, x2, y2);
-        }
+        if (node.getShortNeighborNode() == voisin)
+            g2.setColor(this.ctrl.getTheme().get("enableColor"));
         else
-        {
-            /*------------------------------*/
-            /* affichage du cout de l'arête */
-            /*------------------------------*/
-            int xOrig = (node  .getX());
-            int yOrig = (node  .getY());
-            int xDest = (voisin.getX());
-            int yDest = (voisin.getY());
-
-            int xSection = (xOrig + xDest) / 2;
-            int ySection = (yOrig + yDest) / 2;
-
-            g2.setColor(this.ctrl.getTheme().get("foreground"));
-            g2.setFont(new Font("Arial", 0, node.getWidth()));
-            g2.drawString(""+node.getCost(voisin), xSection, ySection);
-
-
-            /*------------*/
-            /* Arrow Line */
-            /*------------*/
-            x1 = node.getX() + (int) (node.getWidth() /2);
-            y1 = node.getY() + (int) (node.getHeight()/2);
-
-            x2 = voisin.getX() + (int) (voisin.getWidth() /2);
-            y2 = voisin.getY() + (int) (voisin.getHeight()/2);
-
             g2.setColor(this.ctrl.getTheme().get("background"));
 
-            g2.drawLine(x1, y1, x2, y2);
 
-            /*------------*/
-            /* Arrow Head */
-            /*------------*/
-            double angle = Math.atan2(y2 - y1, x2 - x1) * 180 / Math.PI;
+        /*------------*/
+        /* Arrow Line */
+        /*------------*/
+        x1 = node.getX() + (int) (node.getWidth() /2);
+        y1 = node.getY() + (int) (node.getHeight()/2);
 
-            x1 = voisin.getX() + (int) ((voisin.getWidth ()/2) - ((voisin.getWidth ()/2)*Math.cos(Math.toRadians(angle))));
-            y1 = voisin.getY() + (int) ((voisin.getHeight()/2) - ((voisin.getHeight()/2)*Math.sin(Math.toRadians(angle))));
+        x2 = voisin.getX() + (int) (voisin.getWidth() /2);
+        y2 = voisin.getY() + (int) (voisin.getHeight()/2);
 
-            x2 = x1 - (int) (25*Math.cos(Math.toRadians(angle))) + (int) (15*Math.sin(Math.toRadians(angle)));
-            y2 = y1 - (int) (25*Math.sin(Math.toRadians(angle))) - (int) (15*Math.cos(Math.toRadians(angle)));
-            g2.drawLine(x1, y1, x2, y2);
+        g2.drawLine(x1, y1, x2, y2);
 
-            x2 = x1 - (int) (25*Math.cos(Math.toRadians(angle))) - (int) (15*Math.sin(Math.toRadians(angle)));
-            y2 = y1 - (int) (25*Math.sin(Math.toRadians(angle))) + (int) (15*Math.cos(Math.toRadians(angle)));
-            g2.drawLine(x1, y1, x2, y2);
-        }
+        /*------------*/
+        /* Arrow Head */
+        /*------------*/
+        double angle = Math.atan2(y2 - y1, x2 - x1) * 180 / Math.PI;
+
+        x1 = voisin.getX() + (int) ((voisin.getWidth ()/2) - ((voisin.getWidth ()/2)*Math.cos(Math.toRadians(angle))));
+        y1 = voisin.getY() + (int) ((voisin.getHeight()/2) - ((voisin.getHeight()/2)*Math.sin(Math.toRadians(angle))));
+
+        x2 = x1 - (int) (25*Math.cos(Math.toRadians(angle))) + (int) (15*Math.sin(Math.toRadians(angle)));
+        y2 = y1 - (int) (25*Math.sin(Math.toRadians(angle))) - (int) (15*Math.cos(Math.toRadians(angle)));
+        g2.drawLine(x1, y1, x2, y2);
+
+        x2 = x1 - (int) (25*Math.cos(Math.toRadians(angle))) - (int) (15*Math.sin(Math.toRadians(angle)));
+        y2 = y1 - (int) (25*Math.sin(Math.toRadians(angle))) + (int) (15*Math.cos(Math.toRadians(angle)));
+        g2.drawLine(x1, y1, x2, y2);
     }
 
 
@@ -214,6 +190,8 @@ public class PanelPaint extends JPanel implements MouseListener, MouseMotionList
                 me.getY() > node.getY() - node.getHeight() && me.getY() < node.getY() + node.getHeight() )
             {
                 this.nodeSelected = node;
+                Cursor curseur = new Cursor(Cursor.MOVE_CURSOR);
+                this.setCursor(curseur);
                 break;
             }
         }
@@ -223,6 +201,8 @@ public class PanelPaint extends JPanel implements MouseListener, MouseMotionList
     public void mouseReleased(MouseEvent me)
     {
         this.nodeSelected = null;
+        Cursor curseur = new Cursor(Cursor.HAND_CURSOR);
+        this.setCursor(curseur);
     }
 
     @Override
@@ -247,7 +227,25 @@ public class PanelPaint extends JPanel implements MouseListener, MouseMotionList
     }
 
     @Override
-    public void mouseMoved(MouseEvent me) {}
+    public void mouseMoved(MouseEvent me)
+    {
+        for (Node node : this.ctrl.getNodes())
+        {
+            if (me.getX() > node.getX() - 2                && me.getX() < node.getX() + node.getWidth() &&
+                me.getY() > node.getY() - node.getHeight() && me.getY() < node.getY() + node.getHeight() )
+            {
+                Cursor curseur = new Cursor(Cursor.HAND_CURSOR);
+                this.setCursor(curseur);
+                break;
+            }
+            else
+            {
+                Cursor curseur = new Cursor(Cursor.DEFAULT_CURSOR);
+                this.setCursor(curseur);
+            }
+        }
+    }
+
     @Override
     public void mouseEntered(MouseEvent me) {}
     @Override

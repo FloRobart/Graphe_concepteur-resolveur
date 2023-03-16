@@ -10,14 +10,14 @@ import java.util.List;
 public class BellmanFord
 {
     private int V, E;
-    private int[][] edges;
+    private int[][] matrice;
     private int[] distance;
 
-    public BellmanFord(int[][] edges, int V)
+    public BellmanFord(int[][] matriceAdjascence, int V)
     {
-        this.edges = edges;
+        this.matrice = matriceAdjascence;
         this.V = V;
-        this.E = edges.length;
+        this.E = matrice.length;
     }
 
     /**
@@ -36,19 +36,19 @@ public class BellmanFord
         int[] distance = new int[V];
         int[] parent = new int[V];
 
-        // Initialisation des distances et des parents
+        /* Initialisation des distances et des parents */
         Arrays.fill(distance, Integer.MAX_VALUE);
         Arrays.fill(parent, -1);
         distance[source] = 0;
 
-        // Algorithme de Bellman-Ford
+        /* Algorithme de Bellman-Ford */
         for (int i = 0; i < V - 1; i++)
         {
             for (int j = 0; j < E; j++)
             {
-                int u = edges[j][0];
-                int v = edges[j][1];
-                int weight = edges[j][2];
+                int u = matrice[j][0];
+                int v = matrice[j][1];
+                int weight = matrice[j][2];
                 if (distance[u] != Integer.MAX_VALUE && distance[u] + weight < distance[v])
                 {
                     distance[v] = distance[u] + weight;
@@ -57,8 +57,7 @@ public class BellmanFord
             }
         }
 
-        // Affichage des chemins les plus courts
-
+        /* Remplissage de la liste à return */
         if (distance[dest] != Integer.MAX_VALUE)
         {
             lstRet = new ArrayList<>();
@@ -77,16 +76,21 @@ public class BellmanFord
         return lstRet;
     }
 
-    public boolean bellmanFordOptimized(int[][] edges)
+    /**
+     * ???
+     * @param matrice Matrice d'adjascence du graphe
+     * @return ???
+     */
+    public boolean bellmanFordOptimized(int[][] matrice)
     {
         boolean isOptimized = true;
         for (int i = 0; i < V - 1 && isOptimized; i++)
         {
             isOptimized = false;
             for (int j = 0; j < E; j++) {
-                int u = edges[j][0];
-                int v = edges[j][1];
-                int weight = edges[j][2];
+                int u = matrice[j][0];
+                int v = matrice[j][1];
+                int weight = matrice[j][2];
                 if (distance[u] != Integer.MAX_VALUE && distance[u] + weight < distance[v])
                 {
                     distance[v] = distance[u] + weight;
@@ -97,7 +101,12 @@ public class BellmanFord
         return !isOptimized;
     }
 
-    public boolean hasAbsorbingCycle(int[][] edges)
+    /**
+     * Permet de savoir si le graphe contient un cycle absorbant
+     * @param matrice Matrice d'adjascence du graphe
+     * @return true si le graphe contient un cycle absorbant, false sinon
+     */
+    public boolean hasAbsorbingCycle(int[][] matrice)
     {
         distance = new int[V];
         boolean isOptimized = true;
@@ -106,9 +115,9 @@ public class BellmanFord
             isOptimized = false;
             for (int j = 0; j < E; j++)
             {
-                int u = edges[j][0];
-                int v = edges[j][1];
-                int weight = edges[j][2];
+                int u = matrice[j][0];
+                int v = matrice[j][1];
+                int weight = matrice[j][2];
                 if (distance[u] != Integer.MAX_VALUE && distance[u] + weight < distance[v])
                 {
                     distance[v] = distance[u] + weight;
@@ -119,39 +128,14 @@ public class BellmanFord
 
         for (int j = 0; j < E; j++)
         {
-            int u = edges[j][0];
-            int v = edges[j][1];
-            int weight = edges[j][2];
+            int u = matrice[j][0];
+            int v = matrice[j][1];
+            int weight = matrice[j][2];
             if (distance[u] != Integer.MAX_VALUE && distance[u] + weight < distance[v])
             {
                 return true; // un circuit absorbant a été trouvé
             }
         }
         return false; // pas de circuit absorbant
-    }
-
-    public static void main(String[] args)
-    {
-        // Définition du graphe
-        int[][] graph = {
-            {0, 1, 4},
-            {0, 2, 3},
-            {1, 2, -2},
-            {1, 3, 5},
-            {2, 3, 4},
-            {2, 4, 1},
-            {3, 4, 2},
-            {3, 5, 6},
-            {4, 5, 3},
-            {3, 3, -1}
-        };
-        int nbNoeud = 6;
-
-        // Création de l'objet BellmanFord
-        BellmanFord bellmanFord2 = new BellmanFord(graph, nbNoeud);
-
-        // Recherche des chemins les plus courts à partir du sommet 0
-        //bellmanFord.shortestPath(0);
-        bellmanFord2.hasAbsorbingCycle(graph);
     }
 }

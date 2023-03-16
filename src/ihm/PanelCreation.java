@@ -179,13 +179,12 @@ public class PanelCreation extends JPanel implements ActionListener
         }
         else if(ae.getSource() == this.btnFindShortPath)
         {
-            if (this.cbNodeA.getSelectedItem() != null && this.cbNodeB.getSelectedItem() != null)
+            if (this.cbNodeA.getSelectedItem() != null && this.cbNodeB.getSelectedItem() != null && this.cbNodeA.getSelectedItem() != this.cbNodeB.getSelectedItem())
                 this.ctrl.findShortPath((Node)(this.cbNodeA.getSelectedItem()), (Node)(this.cbNodeB.getSelectedItem()));
         }
         else if(ae.getSource() == this.btnFindAbsorbingCircuit)
         {
-            if (this.cbNodeA.getSelectedItem() != null && this.cbNodeB.getSelectedItem() != null)
-                this.ctrl.findAbsorbingCircuit((Node)(this.cbNodeA.getSelectedItem()), (Node)(this.cbNodeB.getSelectedItem()));
+            this.ctrl.findAbsorbingCircuit();
         }
         else if (ae.getSource() == this.btnFindAbsorbingNode)
         {

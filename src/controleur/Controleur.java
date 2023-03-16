@@ -78,7 +78,7 @@ public class Controleur
     /**
      * Permet de trouver et d'afficher les circuit absorbant du graphe s'il y en a
      */
-    public void findAbsorbingCircuit(Node nA, Node nB) { this.metier.findAbsorbingCircuit(nA, nB); }
+    public void findAbsorbingCircuit() { this.metier.findAbsorbingCircuit(); }
 
     /**
      * Permet de trouver et d'afficher les noeuds absorbant du graphe s'il y en a

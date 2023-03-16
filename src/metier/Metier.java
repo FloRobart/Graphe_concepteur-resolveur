@@ -8,10 +8,13 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
+
+import javax.swing.JOptionPane;
 
 import controleur.Controleur;
 
@@ -181,29 +184,39 @@ public class Metier
      */
     public void findShortPath(Node nA, Node nB)
 	{
-		//BellmanFord bf = new BellmanFord(this.lstNode);
-		//bf.execute(nA);
-		//bf.getDistance(nB);
-
-
 		BellmanFord bf2 = new BellmanFord(this.lstNodesToMatrice(this.lstNode), this.lstNode.size());
 		List<Integer> lstShortestPath = bf2.shortestPath(nA.getNameInInt(), nB.getNameInInt());
 
-		System.out.print("lst = ");
-        for (Integer i : lstShortestPath) {
-            System.out.print(i + " ");
-        }
-        System.out.println("\n");
 
-		//if (lstShortestPath == null || lstShortestPath.size() == 0)
-		//{
-		//	//System.out.println("Pas de chemin possible");
-		//	return;
-		//}
-		//Collections.reverse(lstShortestPath);
-		//for (int i = 0; i < lstShortestPath.size(); i++) {
-		//	System.out.println(Node.convertIntToName(lstShortestPath.get(i)) + " --> ");
-		//}
+		if (lstShortestPath == null || lstShortestPath.size() == 0) { JOptionPane.showMessageDialog(this.ctrl.getFramePrincipale(), "Aucun chemin ne vas de " + nA.getName() + " à " + nB.getName() + ".", "Résultat du chemin le plus court", JOptionPane.INFORMATION_MESSAGE); return; }
+
+
+		/* Remise à zero de l'attribut 'shortNeighborNode' dans tous les noeuds de la liste */
+		for (Node n : this.lstNode)
+			n.setShortNeighborNode(null);
+
+		for (int i = 1; i < lstShortestPath.size()-1; i++)
+		{
+			/* Récupération du noeud qui à ce nom */
+			Node shortNeighborNode = this.getNodeByName(Node.convertIntToName(lstShortestPath.get(i)));
+
+			/* Définition du noeud suivant dans la liste comme 'shortNeighborNode' */
+			shortNeighborNode.setShortNeighborNode(this.getNodeByName(Node.convertIntToName(lstShortestPath.get(i+1))));
+		}
+		System.out.println("cout = " + lstShortestPath.get(0) + "\n");
+
+
+		System.out.print("chemin en partant de nA : " + nA.getName() + " --> ");
+		Node shortNeighborNode = nA.getShortNeighborNode();
+		while (shortNeighborNode != null)
+		{
+			System.out.print(shortNeighborNode.getName() + " --> ");
+
+			shortNeighborNode = shortNeighborNode.getShortNeighborNode();
+		}
+		System.out.println("cout = " + lstShortestPath.get(0) + "\n");
+
+		this.ctrl.majIhm();
 	}
 
 	/**
@@ -237,68 +250,33 @@ public class Metier
 		return edges;
 	}
 
-
-
-	//private static void BellManFord(Graph graph, Node source) {
-    //    
-	//	// Initialisation
-	//	for (Node node : graph) {
-	//
-	//		node.setAttribute("distance", Double.POSITIVE_INFINITY);
-	//		node.setAttribute("parent", "null");
-	//	}
-	//	source.setAttribute("distance", 0);
-	//
-	//	// Algorithme
-	//	for (int i = 0; i < graph.getNodeCount() - 1; i++)
-	//	{
-	//		for (Node node : graph)
-	//		{
-	//			Iterator<Node> it = node.getNeighborNodeIterator();
-	//			while (it.hasNext())
-	//			{
-	//				Node neighbor = it.next();
-	//
-	//				if (node.getEdgeBetween(neighbor) == null) continue;
-	//				double distance = node.getNumber("distance") + node.getEdgeBetween(neighbor).getNumber("length");
-	//
-	//				if (distance < neighbor.getNumber("distance"))
-	//				{
-	//					neighbor.setAttribute("distance", distance);
-	//					neighbor.setAttribute("parent", node);
-	//				}
-	//			}
-	//		}
-	//	}
-	//
-	//	// Affichage
-	//	
-	//}
-
 	/**
      * Permet de trouver et d'afficher les circuit absorbant du graphe s'il y en a
      */
-    public void findAbsorbingCircuit(Node nA, Node nB)
+    public void findAbsorbingCircuit()
 	{
-		System.out.println("nom en int = " + nA.getNameInInt());
-
-		for (int i = 0; i < this.lstNode.size(); i++) {
-			if (lstNode.get(i).getName() == nA.getName()) System.out.println("nombre de noeud = " + i);
+		String sRet = "";
+		for (Node node : this.lstNode)
+		{
+			for (Node node2 : this.lstNode)
+			{
+				List<Integer> lstShortestPath = new BellmanFord(this.lstNodesToMatrice(this.lstNode), this.lstNode.size()).shortestPath(node.getNameInInt(), node2.getNameInInt());
+				if (lstShortestPath != null && lstShortestPath.size() > 0)
+				{
+					if (lstShortestPath.get(0) < 0)
+					{
+						sRet += "Circuit absorbant trouvé : " + node.getName() + " --> " + node2.getName() + "\n";
+					}
+				}
+			}
 		}
 
-		//for (int i = 0; i < lstNode.size(); i++)
-		//{
-		//	if (lstNode.get(i).getNeighbors().size() == 0)
-		//		lstNode.get(i).setAbsorbant(true);
-		//	else if (lstNode.get(i).getNeighbors().size() == 1)
-		//		if (lstNode.get(i).getNeighbors().get(0) == lstNode.get(i))
-		//			lstNode.get(i).setAbsorbant(true);
-		//		else
-		//			lstNode.get(i).setAbsorbant(false);
-		//	else
-		//		lstNode.get(i).setAbsorbant(false);
-		//}
+		if (sRet.equals(""))
+			JOptionPane.showMessageDialog(this.ctrl.getFramePrincipale(), "Aucun circuit absorbant n'a été trouvé.", "Résultat du circuit absorbant", JOptionPane.INFORMATION_MESSAGE);
+		else
+			JOptionPane.showMessageDialog(this.ctrl.getFramePrincipale(), "Circuit absorbant trouvé : " + sRet, "Résultat du circuit absorbant", JOptionPane.INFORMATION_MESSAGE);
 	}
+
 
     /**
      * Permet de trouver et d'afficher les noeuds absorbant du graphe s'il y en a

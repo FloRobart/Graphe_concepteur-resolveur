@@ -4,7 +4,6 @@
 .\src\metier\Path.java  
 .\src\metier\Node.java  
 .\src\metier\BellmanFord.java  
-.\src\metier\BellmanFord2.java  
  
 .\src\ihm\FramePrincipale.java  
 .\src\ihm\PanelCreation.java  
