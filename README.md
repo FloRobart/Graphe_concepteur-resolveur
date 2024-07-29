@@ -4,6 +4,8 @@ Ce projet scolaire est une application desktop réalisé en deuxième année de 
 
 Elle à été réalisé en Java et permet de concevoir des graphes, trouvé le chemin le plus court en deux noeuds du graphe ainsi que de souvegarder et recharger des graphes qui ont été sauvegardé précédemment.
 
+Vous pouvez également personnaliser l'application grâce à différent thème. 
+
 ## Compiler et lancer l'application
 
 ### Sous Windows
